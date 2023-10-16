@@ -1,0 +1,51 @@
+
+<html lang="ru" disable-debug="true">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="editor.js" type="module"></script>
+    
+    <script type="module">
+      import {encode, decode} from "@sciter";
+      import * as sys from "@sys";
+
+      for ( let script of sys.fs.$readdir(URL.toPath(`${__DIR__}elements/`)) ){
+        let script_path = `elements/${script.name}`;
+        if(!loadScriptModule(script_path)){
+          console.error(`Error load module ${script_path}`);
+        }
+        
+      }
+    </script>
+    <script src="generete_svg_plc.js" type="module"></script>
+    <style>
+      popup {
+        background-color:transparent;
+        background-repeat:expand;
+        width:128px;
+        height:max-content;
+        color: #fff;
+        border:none;
+      }
+      
+      popup#elements {
+        popup-position: at-tail; 
+        margin:6dip -6dip;
+        padding:10px 6px;
+      }
+
+      popup#elements[vpos="at-bottom"][hpos="at-left"] { background-image: url(images/callout-at-bottom-left.png); background-position:10ppx 6ppx 6ppx 26ppx; }
+      popup#elements[vpos="at-bottom"][hpos="at-right"] { background-image: url(images/callout-at-bottom-right.png); background-position: 10ppx 26ppx 6ppx 6ppx; }
+      popup#elements[vpos="at-top"][hpos="at-left"] { background-image: url(images/callout-at-top-left.png); background-position: 6ppx 6ppx 10ppx 26ppx; }
+      popup#elements[vpos="at-top"][hpos="at-right"] { background-image: url(images/callout-at-top-right.png); background-position: 6ppx 26ppx 10ppx 6ppx; }
+    </style>
+    <popup#elements>
+      При двойном клике открывается диалоговое окно настроек элемента.
+    </popup>
+
+  </head>
+  <body>
+    
+  </body>
+</html>

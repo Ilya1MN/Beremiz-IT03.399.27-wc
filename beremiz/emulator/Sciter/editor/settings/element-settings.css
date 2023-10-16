@@ -1,0 +1,41 @@
+
+div.submit_btn {
+    margin:40; 
+    bottom: 0px; 
+    text-align: right;
+    
+}
+div.submit_btn > button{
+    box-sizing: border-box;
+    width: 70px; 
+    height: 40px;
+}
+select[name=ddcm] option{
+    padding-left:20px;
+    
+}
+
+/*body{
+    background-color: rgb(235, 235, 235);  
+}*/
+
+
+#Settings { 
+    margin: 0;
+    
+    padding: 15; 
+}
+
+.settings{clear:both; box-align:right;}
+
+.parameter{
+    margin: 5;
+    padding: 15;
+    background-color: rgb(245, 245, 245);
+    
+    border:1px solid rgb(175, 175, 175); 
+}
+
+.parameter {clear:both; text-align:right;}
+
+label {float:left;}

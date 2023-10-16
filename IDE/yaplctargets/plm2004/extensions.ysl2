@@ -1,0 +1,36 @@
+include yslt.yml2
+estylesheet xmlns:ppx="http://www.plcopen.org/xml/tc6_0201"
+            xmlns:xhtml="http://www.w3.org/1999/xhtml"
+            xmlns:ns="extensions_ns"
+            extension-element-prefixes="ns"
+            exclude-result-prefixes="ns" {
+
+    variable "project" {
+        copy "document
+    template "ppx:in('project')/project/*";
+    }terface" {
+        apply "ppx:interface";
+        apply "ppx:actions/ppx:action | ppx:transitions/ppx:transition", mode="variable_list";
+    }
+    function "add_root" {
+        param "class";
+        param "type";
+        param "edit" > true
+        param "debug" > true
+        value "ns:SetRoot($class, $type, $edit, $debug)";
+    }
+
+    function "add_child" {
+        param "type";
+        param "debug" > true
+        value "ns:SetChild($type, $debug)";
+    }
+
+    template "ppx:variable" {
+        param "parent_path";
+        variable "variable_path" > «$parent_path».«@name»
+        apply "ppx:type/ppx:derived" {
+            with "variable_path" > «$variable_path»
+        }
+    }
+}

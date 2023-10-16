@@ -1,0 +1,17 @@
+button.submit_btn{margin:30; position: fixed; right:25px;}
+select[name=ddcm] option{
+    padding-left:20px;
+}
+label {float:left;}
+
+body{
+    padding: 25;
+}
+.target_selector{
+    clear:both; text-align:right;
+}
+
+.parameter{margin: 10;}
+
+.parameter {clear:both; text-align:right;}
+

@@ -1,0 +1,374 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="lamsystems-it.ru" productName="LibIT_AO" productVersion="1" creationDateTime="2019-11-13T09:37:45" productRelease="0"/>
+  <contentHeader name="LibIT_AO" modificationDateTime="2021-12-27T17:15:46" version="1">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="0" y="0"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="AOMode" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение на выполнение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="AOn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер выхода]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="M">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[режим работы]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_AOMode(AOMODE*);App_AOMode(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Установка режима работы аналогового выхода]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="AOStatus" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="AOn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер выхода]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Om">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[режим работы (установленный)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Oesf">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение реакции на таймер безопасности (установленное)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ovsf">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[уровень безопасного состояния (установленный)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_AOStatus(AOSTATUS*);App_AOStatus(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Текущий режим и состояние выхода AO]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="AOVal" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение на выполнение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="AOn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер выхода]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="V">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[значение]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ov">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[значение (установленное)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_AOVal(AOVAL*);App_AOVal(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Установка значения нормального аналогового выхода]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="AOFast" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение на выполнение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="AOn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер выхода]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="V">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[значение быстрого выхода]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ov">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[значение быстрого выхода (установленное)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_AOFast(AOFAST*);App_AOFast(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Установка значения быстрого аналогового выхода]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="AOSafe" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение на выполнение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="EnSF">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение реакции на таймер безопасности]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="AOn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер выхода]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="V">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[заданный уровень безопасного состояния]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_AOSafe(AOSAFE*);App_AOSafe(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Установка безопасного значения аналогового выхода]]></xhtml:p>
+        </documentation>
+      </pou>
+    </pous>
+  </types>
+   <instances>
+     <configurations/>
+   </instances>
+</project>

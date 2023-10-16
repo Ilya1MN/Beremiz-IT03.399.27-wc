@@ -1,0 +1,43 @@
+
+@set tool-bar {
+    :root {
+        background: var(base95-color);
+        color:var(base95-text-color); 
+    }
+    :root > button {
+        size:24px;
+        foreground-repeat:no-repeat;
+        foreground-position: 50% 50%;
+        foreground-size:16px;
+        // test, just a test 
+        
+    }
+    :root > button.cmd.new-file {
+        foreground-image: url(images/new-file.svg);
+    }
+    :root > button.cmd.open-file{
+        foreground-image: url(images/open-file.svg);
+    }
+    :root > button.cmd.save-file{
+        foreground-image: url(images/save.svg);
+    }
+    :root > button.cmd.save-file-as{
+        foreground-image: url(images/save_as.svg);
+    }
+
+    :root > button.cmd.run{
+        foreground-image: url(images/run.svg);
+    }
+
+    :root > button.cmd.pause{
+        foreground-image: url(images/pause.svg);
+    }
+
+    :root > button.cmd.stop{
+        foreground-image: url(images/stop.svg);
+    }
+    :root > button.cmd.settings{
+        foreground-image: url(images/settings.svg);
+    }
+
+} 

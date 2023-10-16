@@ -1,0 +1,3 @@
+SoftPlc.dll
+SoftPlc.lib
+sqlite3.dll

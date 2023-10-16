@@ -1,0 +1,26 @@
+<svg
+   width="60"
+   height="100"
+   viewBox="0 0 50 30"
+   xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.257106;stroke-opacity:1"
+       width="38"
+       height="30"/>
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-opacity:1"
+       d="m 38 15 H 50" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       width="25"
+       height="10"
+       x="6.5"
+       y="10" rx="5"/>
+    <circle
+       style="fill:#bababa;fill-opacity:1;stroke:#000000;stroke-width:0.264999;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       cx="11.5"
+       cy="15"
+       r="5" />
+  </g>
+</svg>

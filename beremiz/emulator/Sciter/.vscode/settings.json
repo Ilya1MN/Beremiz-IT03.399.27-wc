@@ -1,0 +1,40 @@
+{
+    "svg.preview.background": "black",
+    "files.exclude": {
+        "**/*.[Tt][Uu][Oo]": true,
+        "**/*.[Pp][Uu][Oo]": true,
+        "**/*.[Ff][Uu][Oo]": true,
+        "**/*.[Ff][Uu][Ll]": true,
+        "**/*.[Ff][Uu][Dd]": true,
+        "**/*.[Ss][Vv][Ll]": true,
+        "**/*.[Ss][Vv][Dd]": true,
+        "**/*.[Ii][Ss][Ll]": true,
+        "**/*.[Ii][Tt]": true
+    },
+    "[iec_src]": {
+        "files.encoding": "windows1252"
+    },
+    "[iec_sv]": {
+        "files.encoding": "windows1252"
+    },
+    "[iec_fu]": {
+        "files.encoding": "windows1252"
+    },
+    "[iec_helper1]": {
+        "files.encoding": "windows1252"
+    },
+    "[iec_helper2]": {
+        "files.encoding": "windows1252",
+        "editor.wordSeparators": "'"
+    },
+    "[iec_prj]": {
+        "files.encoding": "windows1252"
+    },
+    "[ini]": {
+        "files.encoding": "windows1252"
+    },
+    "search.exclude": {
+        "**/.vscode": true
+    },
+    "kestudiocode.iec.toolchainVersion": "1.2.0-alpha.10"
+}

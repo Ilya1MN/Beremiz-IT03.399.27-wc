@@ -1,0 +1,22 @@
+button.cmd{margin:5;}
+
+.buttons{
+    clear:both; position: fixed; right:25px;bottom: 25px;
+}
+
+select[name=ddcm] option{
+    padding-left:20px;
+}
+p {float:left;}
+
+body{
+    padding: 25;
+}
+.target_selector{
+    clear:both; text-align:right;
+}
+
+.parameter{margin: 10;}
+
+.parameter {clear:both; text-align:right;}
+

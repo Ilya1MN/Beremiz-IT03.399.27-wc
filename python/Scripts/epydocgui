@@ -1,0 +1,7 @@
+#!C:\Beremiz AfterTest\Py3\Beremiz_x86\python\python.exe
+#
+# Call the graphical interface for Epydoc.
+#
+
+from epydoc.gui import gui
+gui()

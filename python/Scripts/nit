@@ -1,0 +1,3 @@
+#!C:\Beremiz AfterTest\Py3\Beremiz_x86\python\python.exe
+from nevow.scripts.nit import run
+run()

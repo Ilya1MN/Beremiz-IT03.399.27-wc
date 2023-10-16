@@ -1,0 +1,2769 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="lamsystems-it.ru" productName="LibIT_MBRTU_MASTER" productVersion="1" creationDateTime="2020-08-04T15:04:45" productRelease="0"/>
+  <contentHeader name="LibIT_MBRTU_MASTER" modificationDateTime="2021-12-16T15:43:44" version="1">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="0" y="0"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="MbRtuDiag" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="SubFunc">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[sub code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I2">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I3">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I4">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I5">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I6">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I7">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I8">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[transmit data byte 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="OutData">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[recive data byte 1]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_SendDiagQuery(MBRTUDIAG*);AppMbRtuMaster_SendDiagQuery(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Send Diagnostic Query]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuSetTimeOutValue" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Value">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="500"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[new timeout value]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_SetTimeOutValue(MBRTUSETTIMEOUTVALUE*);AppMbRtuMaster_SetTimeOutValue(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: SET TOUT Value]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuGetTimeOutValue" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Value">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="500"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[current timeout value]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_GetTimeOutValue(MBRTUGETTIMEOUTVALUE*);AppMbRtuMaster_GetTimeOutValue(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: GET TOUT Value]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuReadBool" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O1">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O2">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O3">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O4">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O5">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O6">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O7">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O8">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_ReadBool(MBRTUREADBOOL*);AppMbRtuMaster_ReadBool(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Read BOOL-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuReadInt" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O1">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O2">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O3">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O4">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O5">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O6">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O7">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O8">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_ReadInt(MBRTUREADINT*);AppMbRtuMaster_ReadInt(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Read INT-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuReadDInt" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O1">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O2">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O3">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O4">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O5">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O6">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O7">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O8">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_ReadDInt(MBRTUREADDINT*);AppMbRtuMaster_ReadDInt(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Read DINT-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuReadWord" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O2">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O3">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O4">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O5">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O6">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O7">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O8">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_ReadWord(MBRTUREADWORD*);AppMbRtuMaster_ReadWord(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Read WORD-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuReadDWord" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O1">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O2">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O3">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O4">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O5">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O6">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O7">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O8">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_ReadDWord(MBRTUREADDWORD*);AppMbRtuMaster_ReadDWord(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Read DWORD-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuReadReal" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O1">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O2">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O3">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O4">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O5">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O6">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O7">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="O8">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_ReadReal(MBRTUREADREAL*);AppMbRtuMaster_ReadReal(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Read REAL-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuWriteBool" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of write registers]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I1">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I2">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I3">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I4">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I5">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I6">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I7">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I8">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_WriteBool(MBRTUWRITEBOOL*);AppMbRtuMaster_WriteBool(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Write BOOL-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuWriteInt" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I1">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I2">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I3">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I4">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I5">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I6">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I7">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I8">
+              <type>
+                <INT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_WriteInt(MBRTUWRITEINT*);AppMbRtuMaster_WriteInt(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Write INT-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuWriteDInt" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I1">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I2">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I3">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I4">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I5">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I6">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I7">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I8">
+              <type>
+                <DINT/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_WriteDInt(MBRTUWRITEDINT*);AppMbRtuMaster_WriteDInt(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Write DINT-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuWriteWord" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I2">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I3">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I4">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I5">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I6">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I7">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I8">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_WriteWord(MBRTUWRITEWORD*);AppMbRtuMaster_WriteWord(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Write WORD-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuWriteDWord" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I1">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I2">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I3">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I4">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I5">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I6">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I7">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I8">
+              <type>
+                <DWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_WriteDWord(MBRTUWRITEDWORD*);AppMbRtuMaster_WriteDWord(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Write DWORD-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="MbRtuWriteReal" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[allow exec.]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Mode">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[work mode (0 - cicle exec 1 - single exec)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Com">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[number of COM-port]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID of target device]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Func">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of ModBus function]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Addr1">
+              <type>
+                <WORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[address of start register]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Num">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="1"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[quantity of read registers]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I1">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 1]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I2">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 2]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I3">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 3]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I4">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 4]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I5">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 5]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I6">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 6]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I7">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 7]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="I8">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[register 8]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[code of result]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="ExPrev">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void AppMbRtuMaster_WriteReal(MBRTUWRITEREAL*);AppMbRtuMaster_WriteReal(data__);}]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[ModBus RTU Master: Write REAL-registers]]></xhtml:p>
+        </documentation>
+      </pou>
+    </pous>
+  </types>
+   <instances>
+     <configurations/>
+   </instances>
+</project>

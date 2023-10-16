@@ -1,0 +1,141 @@
+
+<html lang="ru" window-icon="icon.png" disable-debug="true">
+  <script>
+    // translation table
+    let translation = {};
+  
+    // these tags will be automatically put into translation table
+    JSX_translateTags = {
+    caption: true,
+    p: true,
+    label: true,
+    }
+  
+    JSX_translateText = function(text) {
+    return translation[text] || text;           
+    }
+  
+    JSX_translateNode = function(node, translationId) {
+    const handler = translation[translationId];
+    if(typeof handler != "function") return node; // as it is
+    let translatedText = handler(...node[2]); // pass list of kids as arguments
+    if(!translatedText) return node;
+    return JSX(node[0],node[1],[translatedText]); // synthesize new node
+    }
+  
+    function loadTranslation(lang) {
+    let table = fetch(__DIR__ + "langs/" + lang + ".js", {sync:true}).text();
+    translation = eval("(" + table + ")");
+    }
+    loadTranslation("ru");
+  
+  </script>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        #library {
+          /*flex-grow: 2;*/
+          /*display: flex;
+          order: 2;*/
+          text-align: center;
+          width: *;
+          height: *;
+          overflow: auto;
+        }
+
+        #frameset_library{
+          min-width: 170px;
+        }
+
+        div#library_elements{
+          flow:horizontal-wrap;
+        }
+
+        div.element {
+          /*flex: auto;
+          order: 2;*/
+          width: max-content;
+          border: 1px dotted #000;
+          margin: 10px;
+          /**/
+          
+        }
+
+        div.element > .element {
+          background: #000000;
+          margin: 10px;
+          height: 60px;
+          width: 100px;
+        }
+
+        #StatusBar{
+          text-align: end;
+        }
+      
+        #log {
+          overflow: auto;
+        }
+        debug_log {
+          behavior: virtual-list;
+          prototype: DebugLog url(log/log-bar.js);
+          display:block;
+          flow:vertical;
+          overflow:scroll-indicator;
+          size:*;
+          border:1px solid;
+          vertical-align: bottom; // last "messages" are seen first
+        }
+
+        table {
+          size:*;
+          border:1px solid #ccc;
+        }
+
+        tbody{
+          prototype: MbrtuLog url(log/mbrtu-bar.js);
+          behavior: virtual-list;
+          overflow:scroll-indicator;
+          size:*;
+        }
+        table > thead { 
+          border-bottom:1px solid #ccc; 
+          behavior: column-resizer;
+        }
+        table > thead > tr > th:nth-child(1) { width: 8em; }
+        table > thead > tr > th:nth-child(2) { width: 8em; }
+        table > thead > tr > th:nth-child(3) { width: 30em; }
+        table > thead > tr > th:nth-child(4) { width: *; }
+
+        table > tbody > tr > td { white-space: nowrap; }
+        table > tbody > tr > td:nth-child(4) { width: *; overflow-x:hidden; }
+      </style>
+    <script src="index.js" type="module"></script>
+
+    </head>
+    <body id="index_html" >
+      <div id="ToolBar"></div>
+      <frameset rows="*,150px">
+      <splitter id="unselectable"/>
+        <frameset cols="*,190px">
+          <frameset id="test">
+          <frame lang="ru" id="editor" />
+          </frameset>
+          <splitter/>
+          <frameset id="frameset_library"/>
+        </frameset> 
+        <splitter/>
+        <table fixedlayout>
+          <thead>
+            <th @>Time</th>
+            <th @>Mode</th>
+            <th @>Message</th>
+            <th @>Message service</th>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>    
+        <div id="StatusBar"></div>
+      </frameset>
+      </body>
+  </html>

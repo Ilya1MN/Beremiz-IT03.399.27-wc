@@ -1,0 +1,3 @@
+[console_scripts]
+gridcontrol = grid_control_api:gc_run
+

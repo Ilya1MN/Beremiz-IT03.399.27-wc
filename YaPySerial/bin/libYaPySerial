@@ -1,0 +1,15 @@
+EXPORTS
+    serial_get_baud @1
+    serial_get_baud_int @2
+    serial_get_bits @3
+    serial_get_bits_int @4
+    serial_get_parity @5
+    serial_get_parity_str @6
+    serial_get_stopbit @7
+    serial_get_stopbit_int @8
+    yapy_serial_close @9
+    yapy_serial_get_cfg_str @10
+    yapy_serial_gpio @11
+    yapy_serial_open @12
+    yapy_serial_read @13
+    yapy_serial_write @14

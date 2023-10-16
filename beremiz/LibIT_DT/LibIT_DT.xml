@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="lamsystems-it.ru" productName="LibIT_DT" productVersion="1" creationDateTime="2019-11-13T09:37:45" productRelease="0"/>
+  <contentHeader name="LibIT_DT" modificationDateTime="2022-01-10T13:43:52" version="1">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="0" y="0"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="DTMode" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение на выполнение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="DTn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер входа]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="M">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[режим работы]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_DTMode(DTMODE*);App_DTMode(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Установка режима работы входа DT]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="DTStatus" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="DTn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер входа]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Om">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[режим работы (установленный)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Os">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код состояния]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_DTStatus(DTSTATUS*);App_DTStatus(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Текущий режим и состояние входа DT]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="DTSetID" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение на выполнение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="DTn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер входа]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="ID">
+              <type>
+                <LWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_DTSetId(DTSETID*);App_DTSetId(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Установка ID входа DT]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="DTGetID" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="DTn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер входа]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="OID">
+              <type>
+                <LWORD/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[ID (установленный)]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_DTGetId(DTGETID*);App_DTGetId(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Получение ID входа DT]]></xhtml:p>
+        </documentation>
+      </pou>
+      <pou name="DTVal" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="Ex">
+              <type>
+                <BOOL/>
+              </type>
+              <initialValue>
+                <simpleValue value="FALSE"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[разрешение на выполнение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="DTn">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[номер входа]]></xhtml:p>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Ov">
+              <type>
+                <REAL/>
+              </type>
+              <initialValue>
+                <simpleValue value="0.0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[значение]]></xhtml:p>
+              </documentation>
+            </variable>
+            <variable name="Ok">
+              <type>
+                <BYTE/>
+              </type>
+              <initialValue>
+                <simpleValue value="0"/>
+              </initialValue>
+              <documentation>
+                <xhtml:p><![CDATA[код результата исполнения блока]]></xhtml:p>
+              </documentation>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml:p><![CDATA[{extern void App_DTVal(DTVAL*);App_DTVal(data__);}
+]]></xhtml:p>
+          </ST>
+        </body>
+        <documentation>
+          <xhtml:p><![CDATA[Получение значения входа DT]]></xhtml:p>
+        </documentation>
+      </pou>
+    </pous>
+  </types>
+   <instances>
+     <configurations/>
+   </instances>
+</project>

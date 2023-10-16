@@ -1,0 +1,1262 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2022-03-01 11:51+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: Beremiz.py:154
+msgid "Fetching %s"
+msgstr ""
+
+#: Beremiz.py:162
+msgid "update info unavailable."
+msgstr ""
+
+#: BeremizIDE.py:246 BeremizIDE.py:281 PLCOpenEditor.py:123
+#: PLCOpenEditor.py:165
+msgid "New"
+msgstr ""
+
+#: BeremizIDE.py:248 BeremizIDE.py:282 PLCOpenEditor.py:125
+#: PLCOpenEditor.py:166
+msgid "Open"
+msgstr ""
+
+#: BeremizIDE.py:249
+msgid "&Recent Projects"
+msgstr ""
+
+#: BeremizIDE.py:252 BeremizIDE.py:283 PLCOpenEditor.py:132
+#: PLCOpenEditor.py:167
+msgid "Save"
+msgstr ""
+
+#: BeremizIDE.py:254
+msgid "Save as"
+msgstr ""
+
+#: BeremizIDE.py:256 PLCOpenEditor.py:127
+msgid "Close Tab"
+msgstr ""
+
+#: BeremizIDE.py:258 BeremizIDE.py:571 IDEFrame.py:1115 PLCOpenEditor.py:129
+msgid "Close Project"
+msgstr ""
+
+#: BeremizIDE.py:261 PLCOpenEditor.py:139
+msgid "Page Setup"
+msgstr ""
+
+#: BeremizIDE.py:263 PLCOpenEditor.py:141
+msgid "Preview"
+msgstr ""
+
+#: BeremizIDE.py:265 BeremizIDE.py:285 PLCOpenEditor.py:143
+#: PLCOpenEditor.py:169
+msgid "Print"
+msgstr ""
+
+#: BeremizIDE.py:268 Beremiz_service.py:283 PLCOpenEditor.py:149
+msgid "Quit"
+msgstr ""
+
+#: BeremizIDE.py:284 PLCOpenEditor.py:134 PLCOpenEditor.py:168
+msgid "Save As..."
+msgstr ""
+
+#: BeremizIDE.py:308 BeremizIDE.py:312 PLCOpenEditor.py:182
+#: PLCOpenEditor.py:186
+msgid "Community support"
+msgstr ""
+
+#: BeremizIDE.py:316 PLCOpenEditor.py:190
+msgid "About"
+msgstr ""
+
+#: BeremizIDE.py:383
+msgid "Console"
+msgstr ""
+
+#: BeremizIDE.py:388
+msgid "PLC Log"
+msgstr ""
+
+#: BeremizIDE.py:399
+msgid "Status ToolBar"
+msgstr ""
+
+#: BeremizIDE.py:488
+msgid "Beremiz"
+msgstr ""
+
+#: BeremizIDE.py:578 IDEFrame.py:1121
+msgid "There are changes, do you want to save?"
+msgstr ""
+
+#: BeremizIDE.py:632 PLCOpenEditor.py:232
+msgid "Close Application"
+msgstr ""
+
+#: BeremizIDE.py:871
+msgid "Choose an empty directory for new project"
+msgstr ""
+
+#: BeremizIDE.py:907
+msgid "Choose a project"
+msgstr ""
+
+#: BeremizIDE.py:935
+msgid ""
+"\"%s\" folder is not a valid Beremiz project\n"
+msgstr ""
+
+#: BeremizIDE.py:1003
+msgid "Add"
+msgstr ""
+
+#: BeremizIDE.py:1006 IDEFrame.py:2096
+msgid "Delete"
+msgstr ""
+
+#: BeremizIDE.py:1017 PLCControler.py:109
+msgid "Resources"
+msgstr ""
+
+#: BeremizIDE.py:1087
+msgid "Really delete node '%s'?"
+msgstr ""
+
+#: BeremizIDE.py:1088
+msgid "Remove %s node"
+msgstr ""
+
+#: Beremiz_service.py:204
+msgid "Please enter text"
+msgstr ""
+
+#: Beremiz_service.py:221 IDEFrame.py:1111 IDEFrame.py:1737 IDEFrame.py:1783
+#: IDEFrame.py:1790 IDEFrame.py:1806 IDEFrame.py:1813 PLCOpenEditor.py:370
+#: PLCOpenEditor.py:375 ProjectController.py:402 ProjectController.py:548
+#: ProjectController.py:555
+msgid "Error"
+msgstr ""
+
+#: Beremiz_service.py:271 ProjectController.py:1945
+msgid "Start PLC"
+msgstr ""
+
+#: Beremiz_service.py:272
+msgid "Stop PLC"
+msgstr ""
+
+#: Beremiz_service.py:275
+msgid "Change Name"
+msgstr ""
+
+#: Beremiz_service.py:276
+msgid "Change IP of interface to bind"
+msgstr ""
+
+#: Beremiz_service.py:277
+msgid "Change Port Number"
+msgstr ""
+
+#: Beremiz_service.py:278
+msgid "Change working directory"
+msgstr ""
+
+#: Beremiz_service.py:280
+msgid "Launch a live Python shell"
+msgstr ""
+
+#: Beremiz_service.py:281
+msgid "Launch WX GUI inspector"
+msgstr ""
+
+#: Beremiz_service.py:305
+msgid "PLC is empty or already started."
+msgstr ""
+
+#: Beremiz_service.py:312
+msgid "PLC is not started."
+msgstr ""
+
+#: Beremiz_service.py:317
+msgid "Enter the IP of the interface to bind"
+msgstr ""
+
+#: Beremiz_service.py:318 Beremiz_service.py:320
+msgid "IP is not valid!"
+msgstr ""
+
+#: Beremiz_service.py:326
+msgid "Enter a port number "
+msgstr ""
+
+#: Beremiz_service.py:327
+msgid "Port number must be 0 <= port <= 65535!"
+msgstr ""
+
+#: Beremiz_service.py:327
+msgid "Port number must be an integer!"
+msgstr ""
+
+#: Beremiz_service.py:333
+msgid "Choose a working directory "
+msgstr ""
+
+#: Beremiz_service.py:341
+msgid "Enter a name "
+msgstr ""
+
+#: Beremiz_service.py:342
+msgid "Name must not be null!"
+msgstr ""
+
+#: Beremiz_service.py:436
+msgid "Pyro port :"
+msgstr ""
+
+#: Beremiz_service.py:437
+msgid "Pyro object's uri :"
+msgstr ""
+
+#: Beremiz_service.py:442
+msgid "Current working directory :"
+msgstr ""
+
+#: Beremiz_service.py:450
+msgid "Publishing service on local network"
+msgstr ""
+
+#: Beremiz_service.py:487
+msgid "Twisted unavailable."
+msgstr ""
+
+#: Beremiz_service.py:573
+msgid "Nevow/Athena import failed :"
+msgstr ""
+
+#: Beremiz_service.py:581
+msgid "WAMP import failed :"
+msgstr ""
+
+#: Beremiz_service.py:597
+msgid "Nevow Web service failed. "
+msgstr ""
+
+#: Beremiz_service.py:605
+msgid "WAMP client startup failed. "
+msgstr ""
+
+#: CodeFileTreeNode.py:127 ConfigTreeNode.py:649
+msgid ""
+"Couldn't load confnode parameters {a1} :\n"
+" {a2}"
+msgstr ""
+
+#: ConfigTreeNode.py:58
+msgid ""
+"{a1} XML file doesn't follow XSD schema at line {a2}:\n"
+"{a3}"
+msgstr ""
+
+#: ConfigTreeNode.py:220
+msgid ""
+"Error while saving \"%s\"\n"
+msgstr ""
+
+#: ConfigTreeNode.py:428
+msgid ""
+"A child named \"{a1}\" already exists -> \"{a2}\"\n"
+msgstr ""
+
+#: ConfigTreeNode.py:458
+msgid ""
+"Cannot find lower free IEC channel than %d\n"
+msgstr ""
+
+#: ConfigTreeNode.py:533
+msgid "Cannot create child {a1} of type {a2} "
+msgstr ""
+
+#: ConfigTreeNode.py:545
+msgid "Max count ({a1}) reached for this confnode of type {a2} "
+msgstr ""
+
+#: ConfigTreeNode.py:573
+msgid "Project tree layout do not match confnode.xml {a1}!={a2} "
+msgstr ""
+
+#: ConfigTreeNode.py:632
+msgid ""
+"Couldn't load confnode base parameters {a1} :\n"
+" {a2}"
+msgstr ""
+
+#: ConfigTreeNode.py:662
+msgid ""
+"Could not add child \"{a1}\", type {a2} :\n"
+"{a3}\n"
+msgstr ""
+
+#: IDEFrame.py:109 IDEFrame.py:124 IDEFrame.py:154 IDEFrame.py:195
+msgid "Move the view"
+msgstr ""
+
+#: IDEFrame.py:112 IDEFrame.py:127 IDEFrame.py:157
+msgid "Create a new comment"
+msgstr ""
+
+#: IDEFrame.py:115 IDEFrame.py:145 IDEFrame.py:178
+msgid "Create a new variable"
+msgstr ""
+
+#: IDEFrame.py:118 IDEFrame.py:148 IDEFrame.py:181
+msgid "Create a new block"
+msgstr ""
+
+#: IDEFrame.py:121 IDEFrame.py:151 IDEFrame.py:184
+msgid "Create a new connection"
+msgstr ""
+
+#: IDEFrame.py:130 IDEFrame.py:187
+msgid "Create a new power rail"
+msgstr ""
+
+#: IDEFrame.py:133
+msgid "Create a new rung"
+msgstr ""
+
+#: IDEFrame.py:136
+msgid "Create a new coil"
+msgstr ""
+
+#: IDEFrame.py:139 IDEFrame.py:190
+msgid "Create a new contact"
+msgstr ""
+
+#: IDEFrame.py:142
+msgid "Create a new branch"
+msgstr ""
+
+#: IDEFrame.py:160
+msgid "Create a new initial step"
+msgstr ""
+
+#: IDEFrame.py:163
+msgid "Create a new step"
+msgstr ""
+
+#: IDEFrame.py:166
+msgid "Create a new transition"
+msgstr ""
+
+#: IDEFrame.py:169
+msgid "Create a new action block"
+msgstr ""
+
+#: IDEFrame.py:172
+msgid "Create a new divergence"
+msgstr ""
+
+#: IDEFrame.py:175
+msgid "Create a new jump"
+msgstr ""
+
+#: IDEFrame.py:355
+msgid "&File"
+msgstr ""
+
+#: IDEFrame.py:356
+msgid "&Edit"
+msgstr ""
+
+#: IDEFrame.py:357
+msgid "&Display"
+msgstr ""
+
+#: IDEFrame.py:358
+msgid "&Help"
+msgstr ""
+
+#: IDEFrame.py:365
+msgid "&Data Type"
+msgstr ""
+
+#: IDEFrame.py:367
+msgid "&Function"
+msgstr ""
+
+#: IDEFrame.py:369
+msgid "Function &Block"
+msgstr ""
+
+#: IDEFrame.py:371
+msgid "&Program"
+msgstr ""
+
+#: IDEFrame.py:373
+msgid "&Resource"
+msgstr ""
+
+#: IDEFrame.py:376
+msgid "&Configuration"
+msgstr ""
+
+#: IDEFrame.py:380 IDEFrame.py:441
+msgid "Undo"
+msgstr ""
+
+#: IDEFrame.py:382 IDEFrame.py:442
+msgid "Redo"
+msgstr ""
+
+#: IDEFrame.py:385
+msgid "Enable Undo/Redo"
+msgstr ""
+
+#: IDEFrame.py:388 IDEFrame.py:444
+msgid "Cut"
+msgstr ""
+
+#: IDEFrame.py:390 IDEFrame.py:445
+msgid "Copy"
+msgstr ""
+
+#: IDEFrame.py:392 IDEFrame.py:446
+msgid "Paste"
+msgstr ""
+
+#: IDEFrame.py:395
+msgid "Find"
+msgstr ""
+
+#: IDEFrame.py:397
+msgid "Find Next"
+msgstr ""
+
+#: IDEFrame.py:399
+msgid "Find Previous"
+msgstr ""
+
+#: IDEFrame.py:402 IDEFrame.py:448
+msgid "Search in Project"
+msgstr ""
+
+#: IDEFrame.py:406
+msgid "&Add Element"
+msgstr ""
+
+#: IDEFrame.py:408
+msgid "Select All"
+msgstr ""
+
+#: IDEFrame.py:410
+msgid "&Delete"
+msgstr ""
+
+#: IDEFrame.py:452
+msgid "Refresh"
+msgstr ""
+
+#: IDEFrame.py:455
+msgid "Clear Errors"
+msgstr ""
+
+#: IDEFrame.py:458
+msgid "Zoom"
+msgstr ""
+
+#: IDEFrame.py:467
+msgid "Switch perspective"
+msgstr ""
+
+#: IDEFrame.py:471
+msgid "Reset Perspective"
+msgstr ""
+
+#: IDEFrame.py:623
+msgid "Project"
+msgstr ""
+
+#: IDEFrame.py:639
+msgid "Menu ToolBar"
+msgstr ""
+
+#: IDEFrame.py:647
+msgid "Select an object"
+msgstr ""
+
+#: IDEFrame.py:652
+msgid "Editor ToolBar"
+msgstr ""
+
+#: IDEFrame.py:686 IDEFrame.py:2136
+msgid "Variables"
+msgstr ""
+
+#: IDEFrame.py:694
+msgid "Search"
+msgstr ""
+
+#: IDEFrame.py:703
+msgid "Library"
+msgstr ""
+
+#: IDEFrame.py:711
+msgid "Debugger"
+msgstr ""
+
+#: IDEFrame.py:1189
+msgid "Print preview"
+msgstr ""
+
+#: IDEFrame.py:1214
+msgid ""
+"There was a problem printing.\n"
+"Perhaps your current printer is not set correctly?"
+msgstr ""
+
+#: IDEFrame.py:1710
+msgid "\"%s\" is not a valid identifier!"
+msgstr ""
+
+#: IDEFrame.py:1712
+msgid "\"%s\" is a keyword. It can't be used!"
+msgstr ""
+
+#: IDEFrame.py:1722
+msgid "\"%s\" data type already exists!"
+msgstr ""
+
+#: IDEFrame.py:1732
+msgid "\"%s\" pou already exists!"
+msgstr ""
+
+#: IDEFrame.py:1735 IDEFrame.py:1788 IDEFrame.py:1811
+msgid "A POU has an element named \"%s\". This could cause a conflict. Do you wish to continue?"
+msgstr ""
+
+#: IDEFrame.py:1751 IDEFrame.py:1765
+msgid "A POU named \"%s\" already exists!"
+msgstr ""
+
+#: IDEFrame.py:1754 IDEFrame.py:1768
+msgid "A variable with \"%s\" as name already exists in this pou!"
+msgstr ""
+
+#: IDEFrame.py:1778 IDEFrame.py:1801
+msgid "\"%s\" config already exists!"
+msgstr ""
+
+#: IDEFrame.py:1781 IDEFrame.py:1804
+msgid "There is a POU named \"%s\". This could cause a conflict. Do you wish to continue?"
+msgstr ""
+
+#: IDEFrame.py:1878 IDEFrame.py:2078
+msgid "Program"
+msgstr ""
+
+#: IDEFrame.py:1879 IDEFrame.py:2075
+msgid "Function Block"
+msgstr ""
+
+#: IDEFrame.py:1880
+msgid "Function"
+msgstr ""
+
+#: IDEFrame.py:1987
+msgid "Add DataType"
+msgstr ""
+
+#: IDEFrame.py:1995
+msgid "Add POU"
+msgstr ""
+
+#: IDEFrame.py:2001
+msgid "Paste POU"
+msgstr ""
+
+#: IDEFrame.py:2009
+msgid "Add Configuration"
+msgstr ""
+
+#: IDEFrame.py:2015 IDEFrame.py:2059
+msgid "Add Transition"
+msgstr ""
+
+#: IDEFrame.py:2027 IDEFrame.py:2062
+msgid "Add Action"
+msgstr ""
+
+#: IDEFrame.py:2038 IDEFrame.py:2088
+msgid "Add Resource"
+msgstr ""
+
+#: IDEFrame.py:2067
+msgid "Copy POU"
+msgstr ""
+
+#: IDEFrame.py:2080
+msgid "Change POU Type To"
+msgstr ""
+
+#: IDEFrame.py:2082
+msgid "Rename"
+msgstr ""
+
+#: IDEFrame.py:2115 PLCControler.py:786
+msgid "Global Variables"
+msgstr ""
+
+#: IDEFrame.py:2648
+msgid "\"%s\" is used by one or more POUs. Do you wish to continue?"
+msgstr ""
+
+#: IDEFrame.py:2657
+msgid "Remove Datatype"
+msgstr ""
+
+#: IDEFrame.py:2662
+msgid "Remove Pou"
+msgstr ""
+
+#: IDEFrame.py:2861
+msgid "Page: %d"
+msgstr ""
+
+#: PLCControler.py:107
+msgid "Function Blocks"
+msgstr ""
+
+#: PLCControler.py:107
+msgid "Functions"
+msgstr ""
+
+#: PLCControler.py:107
+msgid "User-defined POUs"
+msgstr ""
+
+#: PLCControler.py:108
+msgid "Actions"
+msgstr ""
+
+#: PLCControler.py:108
+msgid "Data Types"
+msgstr ""
+
+#: PLCControler.py:108
+msgid "Programs"
+msgstr ""
+
+#: PLCControler.py:108
+msgid "Transitions"
+msgstr ""
+
+#: PLCControler.py:109
+msgid "Configurations"
+msgstr ""
+
+#: PLCControler.py:109
+msgid "Properties"
+msgstr ""
+
+#: PLCControler.py:670
+msgid "Unnamed%d"
+msgstr ""
+
+#: PLCControler.py:1103
+msgid "Couldn't paste non-POU object."
+msgstr ""
+
+#: PLCControler.py:1127
+msgid "{a1} \"{a2}\" can't be pasted as a {a3}."
+msgstr ""
+
+#: PLCControler.py:1471
+msgid "Default"
+msgstr ""
+
+#: PLCControler.py:1694
+msgid "%s POUs"
+msgstr ""
+
+#: PLCControler.py:1711
+msgid "%s Data Types"
+msgstr ""
+
+#: PLCControler.py:2517
+msgid "Invalid plcopen element(s)!!!"
+msgstr ""
+
+#: PLCControler.py:2529
+msgid "FunctionBlock \"%s\" can't be pasted in a Function!!!"
+msgstr ""
+
+#: PLCControler.py:3350
+msgid ""
+"Project file syntax error:\n"
+"\n"
+msgstr ""
+
+#: PLCGenerator.py:260
+msgid "Undefined pou type \"%s\""
+msgstr ""
+
+#: PLCGenerator.py:404
+msgid "Source signal has to be defined for single task '{a1}' in resource '{a2}.{a3}'."
+msgstr ""
+
+#: PLCGenerator.py:782
+msgid "SFC transition in POU \"%s\" must be connected."
+msgstr ""
+
+#: PLCGenerator.py:797 PLCGenerator.py:1261
+msgid "More than one connector found corresponding to \"{a1}\" continuation in \"{a2}\" POU"
+msgstr ""
+
+#: PLCGenerator.py:818 PLCGenerator.py:1273
+msgid "No connector found corresponding to \"{a1}\" continuation in \"{a2}\" POU"
+msgstr ""
+
+#: PLCGenerator.py:843
+msgid "No informations found for \"%s\" block"
+msgstr ""
+
+#: PLCGenerator.py:982 PLCGenerator.py:1244
+msgid "Undefined block type \"{a1}\" in \"{a2}\" POU"
+msgstr ""
+
+#: PLCGenerator.py:1127
+msgid "\"{a1}\" function cancelled in \"{a2}\" POU: No input connected"
+msgstr ""
+
+#: PLCGenerator.py:1224
+msgid "No output {a1} variable found in block {a2} in POU {a3}. Connection must be broken"
+msgstr ""
+
+#: PLCGenerator.py:1425
+msgid "SFC jump in pou \"{a1}\" refers to non-existent SFC step \"{a2}\""
+msgstr ""
+
+#: PLCGenerator.py:1556
+msgid "Transition \"%s\" body must contain an output variable or coil referring to its name"
+msgstr ""
+
+#: PLCGenerator.py:1638
+msgid "Transition with content \"{a1}\" not connected to a previous step in \"{a2}\" POU"
+msgstr ""
+
+#: PLCGenerator.py:1649
+msgid "Transition with content \"{a1}\" not connected to a next step in \"{a2}\" POU"
+msgstr ""
+
+#: PLCGenerator.py:1668
+msgid "No variable defined in \"%s\" POU"
+msgstr ""
+
+#: PLCGenerator.py:1670
+msgid "No body defined in \"%s\" POU"
+msgstr ""
+
+#: PLCOpenEditor.py:136
+msgid "Generate Program"
+msgstr ""
+
+#: PLCOpenEditor.py:146
+msgid "&Properties"
+msgstr ""
+
+#: PLCOpenEditor.py:173 PLCOpenEditor.py:242
+msgid "PLCOpenEditor"
+msgstr ""
+
+#: PLCOpenEditor.py:229 PLCOpenEditor.py:344
+msgid ""
+"PLC syntax error at line {a1}:\n"
+"{a2}"
+msgstr ""
+
+#: PLCOpenEditor.py:326 PLCOpenEditor.py:359 PLCOpenEditor.py:408
+msgid "Choose a file"
+msgstr ""
+
+#: PLCOpenEditor.py:326 PLCOpenEditor.py:408
+msgid "PLCOpen files (*.xml)|*.xml|All files|*.*"
+msgstr ""
+
+#: PLCOpenEditor.py:359
+msgid "ST files (*.st)|*.st|All files|*.*"
+msgstr ""
+
+#: PLCOpenEditor.py:363
+msgid "Done"
+msgstr ""
+
+#: PLCOpenEditor.py:366
+msgid ""
+"warning: %s\n"
+msgstr ""
+
+#: PLCOpenEditor.py:368
+msgid ""
+"error: %s\n"
+msgstr ""
+
+#: PLCOpenEditor.py:369
+msgid "Can't generate program to file %s!"
+msgstr ""
+
+#: PLCOpenEditor.py:372
+msgid "Program was successfully generated!"
+msgstr ""
+
+#: PLCOpenEditor.py:374 PLCOpenEditor.py:416
+msgid "\"%s\" is not a valid folder!"
+msgstr ""
+
+#: PLCOpenEditor.py:382
+msgid ""
+"No documentation available.\n"
+"Coming soon."
+msgstr ""
+
+#: PLCOpenEditor.py:390
+msgid ""
+"PLCOpenEditor is part of Beremiz project.\n"
+"\n"
+"Beremiz is an "
+msgstr ""
+
+#: PLCOpenEditor.py:414
+msgid "Can't save project to file %s!"
+msgstr ""
+
+#: ProjectController.py:401
+msgid ""
+"You must have permission to work on the project\n"
+"Work on a project copy ?"
+msgstr ""
+
+#: ProjectController.py:446
+msgid "Chosen folder isn't empty. You can't use it for a new project!"
+msgstr ""
+
+#: ProjectController.py:450 ProjectController.py:451
+msgid "Unnamed"
+msgstr ""
+
+#: ProjectController.py:453
+msgid "Unknown"
+msgstr ""
+
+#: ProjectController.py:479
+msgid "Chosen folder doesn't contain a program. It's not a valid project!"
+msgstr ""
+
+#: ProjectController.py:547
+msgid ""
+"Save path is the same as path of a project! \n"
+msgstr ""
+
+#: ProjectController.py:554
+msgid ""
+"Selected directory already contains another project. Overwrite? \n"
+msgstr ""
+
+#: ProjectController.py:595
+msgid "Choose a directory to save project"
+msgstr ""
+
+#: ProjectController.py:756
+msgid ""
+"Generating SoftPLC IEC-61131 ST/IL/SFC code...\n"
+msgstr ""
+
+#: ProjectController.py:760
+msgid ""
+"Warnings in ST/IL/SFC code generator :\n"
+msgstr ""
+
+#: ProjectController.py:765
+msgid ""
+"Error in ST/IL/SFC code generator :\n"
+"%s\n"
+msgstr ""
+
+#: ProjectController.py:787
+msgid ""
+"matiec installation is not found\n"
+msgstr ""
+
+#: ProjectController.py:790
+msgid ""
+"Compiling IEC Program into C code...\n"
+msgstr ""
+
+#: ProjectController.py:838
+msgid ""
+"Error : IEC to C compiler returned %d\n"
+msgstr ""
+
+#: ProjectController.py:848
+msgid ""
+"Error : At least one configuration and one resource must be declared in PLC !\n"
+msgstr ""
+
+#: ProjectController.py:863
+msgid ""
+"Extracting Located Variables...\n"
+msgstr ""
+
+#: ProjectController.py:1004
+msgid ""
+"Cannot open/parse VARIABLES.csv!\n"
+msgstr ""
+
+#: ProjectController.py:1135
+msgid ""
+" not faund\n"
+msgstr ""
+
+#: ProjectController.py:1139
+msgid ""
+"Start build in %s\n"
+msgstr ""
+
+#: ProjectController.py:1147
+msgid ""
+"PLC code generation failed !\n"
+msgstr ""
+
+#: ProjectController.py:1163
+msgid ""
+"Fatal : cannot get builder.\n"
+msgstr ""
+
+#: ProjectController.py:1170
+msgid ""
+"C Build failed.\n"
+msgstr ""
+
+#: ProjectController.py:1173
+msgid ""
+"C Build crashed !\n"
+msgstr ""
+
+#: ProjectController.py:1178
+msgid ""
+"Successfully built.\n"
+msgstr ""
+
+#: ProjectController.py:1192
+msgid ""
+"Runtime IO extensions C code generation failed !\n"
+msgstr ""
+
+#: ProjectController.py:1201
+msgid ""
+"Runtime library extensions C code generation failed !\n"
+msgstr ""
+
+#: ProjectController.py:1244
+msgid ""
+" generation failed !\n"
+msgstr ""
+
+#: ProjectController.py:1248
+msgid ""
+"C code generated successfully.\n"
+msgstr ""
+
+#: ProjectController.py:1356
+msgid "Select an editor:"
+msgstr ""
+
+#: ProjectController.py:1357
+msgid "Editor selection"
+msgstr ""
+
+#: ProjectController.py:1395
+msgid ""
+"Cleaning the build directory\n"
+msgstr ""
+
+#: ProjectController.py:1398
+msgid ""
+"Build directory already clean\n"
+msgstr ""
+
+#: ProjectController.py:1454
+msgid "Connected to URI: %s"
+msgstr ""
+
+#: ProjectController.py:1460
+msgid "Started"
+msgstr ""
+
+#: ProjectController.py:1461
+msgid "Stopped"
+msgstr ""
+
+#: ProjectController.py:1462
+msgid "Empty"
+msgstr ""
+
+#: ProjectController.py:1463
+msgid "Broken"
+msgstr ""
+
+#: ProjectController.py:1464
+msgid "Disconnected"
+msgstr ""
+
+#: ProjectController.py:1510
+msgid ""
+"Debug: Unsupported type to debug '%s'\n"
+msgstr ""
+
+#: ProjectController.py:1512
+msgid ""
+"Debug: Unknown variable '%s'\n"
+msgstr ""
+
+#: ProjectController.py:1695
+msgid ""
+"Debugger disabled\n"
+msgstr ""
+
+#: ProjectController.py:1723
+msgid ""
+"Stopping debugger...\n"
+msgstr ""
+
+#: ProjectController.py:1726
+msgid ""
+"Couldn't stop debugger.\n"
+msgstr ""
+
+#: ProjectController.py:1728
+msgid ""
+"Debugger stopped.\n"
+msgstr ""
+
+#: ProjectController.py:1751
+msgid ""
+"Starting PLC\n"
+msgstr ""
+
+#: ProjectController.py:1754
+msgid ""
+"Couldn't start PLC !\n"
+msgstr ""
+
+#: ProjectController.py:1762
+msgid ""
+"Couldn't stop PLC !\n"
+msgstr ""
+
+#: ProjectController.py:1788
+msgid ""
+"Already connected. Please disconnect\n"
+msgstr ""
+
+#: ProjectController.py:1803
+msgid ""
+"Local service discovery failed!\n"
+msgstr ""
+
+#: ProjectController.py:1809
+msgid ""
+"Connection canceled!\n"
+msgstr ""
+
+#: ProjectController.py:1826
+msgid ""
+"Exception while connecting %s!\n"
+msgstr ""
+
+#: ProjectController.py:1832
+msgid ""
+"Connection failed to %s!\n"
+msgstr ""
+
+#: ProjectController.py:1853
+msgid ""
+"Debugger ready\n"
+msgstr ""
+
+#: ProjectController.py:1856
+msgid ""
+"Debug does not match PLC - stop/transfert/start to re-enable\n"
+msgstr ""
+
+#: ProjectController.py:1890
+msgid ""
+"Failed : Must build before transfer.\n"
+msgstr ""
+
+#: ProjectController.py:1896
+msgid ""
+"Latest build already matches current target. Transfering anyway...\n"
+msgstr ""
+
+#: ProjectController.py:1918
+msgid ""
+"Transfer completed successfully.\n"
+msgstr ""
+
+#: ProjectController.py:1921
+msgid ""
+"Transfer failed\n"
+msgstr ""
+
+#: ProjectController.py:1924
+msgid ""
+"No PLC to transfer (did build succeed ?)\n"
+msgstr ""
+
+#: ProjectController.py:1931
+msgid "Build"
+msgstr ""
+
+#: ProjectController.py:1932
+msgid "Build project into build folder"
+msgstr ""
+
+#: ProjectController.py:1937
+msgid "Clean"
+msgstr ""
+
+#: ProjectController.py:1938
+msgid "Clean project build folder"
+msgstr ""
+
+#: ProjectController.py:1944
+msgid "Run"
+msgstr ""
+
+#: ProjectController.py:1951
+msgid "Stop"
+msgstr ""
+
+#: ProjectController.py:1952
+msgid "Stop Running PLC"
+msgstr ""
+
+#: ProjectController.py:1958
+msgid "Connect"
+msgstr ""
+
+#: ProjectController.py:1959
+msgid "Connect to the target PLC"
+msgstr ""
+
+#: ProjectController.py:1964
+msgid "Transfer"
+msgstr ""
+
+#: ProjectController.py:1965
+msgid "Transfer PLC"
+msgstr ""
+
+#: ProjectController.py:1971
+msgid "Disconnect"
+msgstr ""
+
+#: ProjectController.py:1972
+msgid "Disconnect from PLC"
+msgstr ""
+
+#: ProjectController.py:1978
+msgid "Show code"
+msgstr ""
+
+#: ProjectController.py:1979
+msgid "Show IEC code generated by PLCGenerator"
+msgstr ""
+
+#: ProjectController.py:1988
+msgid "Raw IEC code"
+msgstr ""
+
+#: ProjectController.py:1989
+msgid "Edit raw IEC code added to code generated by PLCGenerator"
+msgstr ""
+
+#: ProjectController.py:1994
+msgid "Project Files"
+msgstr ""
+
+#: ProjectController.py:1995
+msgid "Open a file explorer to manage project files"
+msgstr ""
+
+#: features.py:31
+msgid "CANopen support"
+msgstr ""
+
+#: features.py:31
+msgid "Map located variables over CANopen"
+msgstr ""
+
+#: features.py:32
+msgid "Add C code accessing located variables synchronously"
+msgstr ""
+
+#: features.py:32
+msgid "C extension"
+msgstr ""
+
+#: features.py:33
+msgid "Add Python code executed asynchronously"
+msgstr ""
+
+#: features.py:33
+msgid "Python file"
+msgstr ""
+
+#: features.py:34
+msgid "Add a simple WxGlade based GUI."
+msgstr ""
+
+#: features.py:34
+msgid "WxGlade GUI"
+msgstr ""
+
+#: features.py:35
+msgid "Experimental web based HMI"
+msgstr ""
+
+#: features.py:35
+msgid "SVGUI"
+msgstr ""
+
+#: version.py:33
+msgid ""
+"The best place to ask questions about Beremiz/PLCOpenEditor\n"
+"is project's mailing list: beremiz-devel@lists.sourceforge.net\n"
+"\n"
+"This is the main community support channel.\n"
+"For posting it is required to be subscribed to the mailing list.\n"
+"\n"
+"You can subscribe to the list here:\n"
+"https://lists.sourceforge.net/lists/listinfo/beremiz-devel"
+msgstr ""
+
+#: version.py:85
+msgid "Open Source framework for automation, implemented IEC 61131 IDE with constantly growing set of extensions and flexible PLC runtime."
+msgstr ""
+

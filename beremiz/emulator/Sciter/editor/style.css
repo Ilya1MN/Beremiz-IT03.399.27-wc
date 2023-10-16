@@ -1,0 +1,142 @@
+/*
+use var:
+  var(zoom_scale, 0.2) // 0.2 - default value
+*/
+
+body{
+  zoom: 1;
+}
+#frameset_editor{
+  zoom: 1;
+  min-width: min-content;
+}
+
+#editor_app {
+  position: absolute;
+  will-change: transform;
+  image-rendering: pixelated;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  user-select: none;
+}
+#editor{
+  
+  position: absolute;
+  transform-origin: 0px 0px;
+}
+
+#rect{
+  border: 1px dotted #000;
+  position: absolute;
+}
+
+.unselectable {
+  user-select: none;
+}
+
+.draggable {
+  margin: 5px;
+  position: absolute;
+  z-index: 999;
+}
+
+.draggable > svg{
+  /*behavior:check;*/
+  /*behavior:layer;*/
+  
+  /*image-rendering: crisp-edges;*/
+  /*image-rendering: pixelated;*/
+  /*image-rendering: optimize-quality;*/
+}
+
+.draggable[selected] { 
+  
+  border: 1px dotted #000;
+  margin: 4px;
+}
+
+.line_path { 
+  stroke-width: 1px;
+  stroke-dasharray: 0;
+}
+
+.line_path[selected] { 
+  left: 0;
+  top: 0;
+  stroke-dasharray: 3;
+  /*animation: 1s linear dash;*/
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 10;
+  }
+}
+
+#connectorLines
+{
+  position: absolute;
+  transform-origin: 0px 0px;
+  background:transparent;
+  position: absolute;
+  background-clip: text;
+  z-index: 5;
+}
+
+.connector {
+  position: absolute;
+}
+
+#setValueInput > button
+{
+  height:0.1*;
+  min-height:5px;
+  width:0.5em;
+  background:white;
+  border:0.5px solid rgb(148, 148, 148);;
+  margin: 0.3px;
+  foreground-position:50% 50%;
+  foreground-size:3dip;
+  foreground-repeat:no-repeat;
+}
+
+#setValueInput > .plus{
+  border-radius: 0 0 0 0;
+  width:0.5em;
+  foreground-image: url(stock:arrow-n-hollow);
+}
+
+#setValueInput > .minus{
+  border-radius: 0 0 0 0;
+  width:0.5em;
+  foreground-image: url(stock:arrow-s-hollow);
+}
+#setValueInput{
+  border:0.5px solid rgb(148, 148, 148);
+  font:system;
+  color: color(widget-text);
+  background: color(widget-back);
+  text-selection: color(selection-nf-text) color(selection-nf);
+  padding:0;
+  height:min-content;
+  border-radius: 0 0 0 0; 
+}
+
+#setValueInput > button:hover
+{
+  transition:none;
+  background:rgb(148, 148, 148);;
+}
+
+#setValueInput > caption 
+  { 
+    line-height:1.2em;
+    height:1.2em;
+    padding:0.4em 0 0.4em 0.4em;
+    border:0dip solid white;
+    border-radius: 0 0 0 0;
+  }

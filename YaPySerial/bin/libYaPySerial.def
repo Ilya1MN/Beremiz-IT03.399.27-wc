@@ -1,0 +1,9 @@
+EXPORTS
+    serial_get_baud @1
+    serial_get_baud_int @2
+    serial_get_bits @3
+    serial_get_bits_int @4
+    serial_get_parity @5
+    serial_get_parity_str @6
+    serial_get_stopbit @7
+    serial_get_stopbit_int @8

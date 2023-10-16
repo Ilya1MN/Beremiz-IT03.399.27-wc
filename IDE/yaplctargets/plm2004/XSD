@@ -1,0 +1,6 @@
+
+                  <xsd:element name="plm2004">
+                    <xsd:complexType>
+                      %(toolchain_yaplc)s
+                    </xsd:complexType>
+                  </xsd:element>

@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1515736406 source:c:\beremiz aftertest\py3\beremiz_x86\yapyserial\src\serial_common.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"serial.h"
+
+1515736406 c:\beremiz aftertest\py3\beremiz_x86\yapyserial\src\serial.h
+

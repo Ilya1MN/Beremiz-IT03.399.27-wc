@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<target name="plm2004">
+  <interface name="DI" id="1" direction="input" Channel="0..7">
+    <mode name="Normal" id="1">
+      <variable name="IX" id="1" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <mode name="Tachometer" id="2">
+      <variable name="IW" id="1" max="10" min="1">
+        <WORD/>
+      </variable>
+      <variable name="MW" id="2" max="10" min="1">
+        <WORD/>
+      </variable>
+      <variable name="MX" id="3" max="10" min="1">
+        <BOOL/>
+      </variable>
+      <variable name="MX" id="4" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <mode name="Counter" id="3">
+      <variable name="ID" id="1" max="10" min="1">
+        <DWORD/>
+      </variable>
+      <variable name="MD" id="2" max="10" min="1">
+        <DWORD/>
+      </variable>
+      <variable name="MX" id="3" max="10" min="1">
+        <BOOL/>
+      </variable>
+      <variable name="MX" id="4" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <variable name="MB" id="1" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="2" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MX" id="3" max="10" min="1">
+      <BOOL/>
+    </variable>
+    <variable name="MX" id="4" max="10" min="1">
+      <BOOL/>
+    </variable>
+  </interface>
+  <interface name="AI" id="2" direction="input" Channel="0..1">
+    <variable name="ID" id="1" max="10" min="1">
+      <DWORD/>
+    </variable>
+    <variable name="MB" id="2" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="3" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="4" max="10" min="1">
+      <BYTE/>
+    </variable>
+  </interface>
+  <interface name="Pt" id="3" direction="input" Channel="0..3">
+    <variable name="ID" id="1" max="10" min="1">
+      <DWORD/>
+    </variable>
+    <variable name="MB" id="2" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="3" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="4" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="5" max="10" min="1">
+      <BYTE/>
+    </variable>
+  </interface>
+  <interface name="Dt" id="4" direction="input" Channel="0..9">
+    <variable name="ID" id="1" max="10" min="1">
+      <DWORD/>
+    </variable>
+    <variable name="MD" id="2" max="10" min="1">
+      <DWORD/>
+    </variable>
+    <variable name="MD" id="3" max="10" min="1">
+      <DWORD/>
+    </variable>
+    <variable name="MB" id="4" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="5" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="6" max="10" min="1">
+      <BYTE/>
+    </variable>
+  </interface>
+  <interface name="DO" id="5" direction="output" Channel="0..7">
+    <mode name="Normal" id="1">
+      <variable name="QX" id="1" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <mode name="Fast" id="2">
+      <variable name="QX" id="1" max="10" min="1">
+        <BOOL/>
+      </variable>
+      <variable name="MX" id="2" max="10" min="1">
+        <BOOL/>
+      </variable>
+      <variable name="MX" id="3" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <mode name="PWM" id="3">
+      <variable name="QD" id="1" max="10" min="1">
+        <DWORD/>
+      </variable>
+      <variable name="MX" id="2" max="10" min="1">
+        <BOOL/>
+      </variable>
+      <variable name="MX" id="3" max="10" min="1">
+        <BOOL/>
+      </variable>
+      <variable name="MD" id="4" max="10" min="1">
+        <DWORD/>
+      </variable>
+    </mode>
+    <variable name="MB" id="1" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="2" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MX" id="3" max="10" min="1">
+      <BOOL/>
+    </variable>
+    <variable name="MX" id="4" max="10" min="1">
+      <BOOL/>
+    </variable>
+  </interface>
+  <interface name="AO" id="6" direction="output" Channel="0..4">
+    <mode name="Normal" id="1">
+      <variable name="QD" id="1" max="10" min="1">
+        <DWORD/>
+      </variable>
+    </mode>
+    <mode name="Fast" id="2">
+      <variable name="QD" id="1" max="10" min="1">
+        <DWORD/>
+      </variable>
+      <variable name="MX" id="2" max="10" min="1">
+        <BOOL/>
+      </variable>
+      <variable name="MX" id="3" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <variable name="MB" id="1" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MB" id="2" max="10" min="1">
+      <BYTE/>
+    </variable>
+    <variable name="MX" id="3" max="10" min="1">
+      <BOOL/>
+    </variable>
+    <variable name="MD" id="4" max="10" min="1">
+      <DWORD/>
+    </variable>
+  </interface>
+  <interface name="System" id="7" direction="memory">
+    <mode name="Flags" id="1">
+      <variable name="MX" id="1" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <variable name="MX" id="1" max="10" min="1">
+      <BOOL/>
+    </variable>
+  </interface>
+  <interface name="User Data" id="8" direction="memory">
+    <mode name="Bool" id="1">
+      <variable name="MX" id="1" max="10" min="1">
+        <BOOL/>
+      </variable>
+    </mode>
+    <variable name="MX" id="1" max="10" min="1">
+      <BOOL/>
+    </variable>
+  </interface>
+</target>
