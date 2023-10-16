@@ -941,15 +941,15 @@ class PLCControler:
             parser.resolvers.add(LibraryResolver(self, debug))
             paths = os.path.join(ScriptDirectory, "plcopen", "instances_path.xslt")
             exten = { ("instances_ns", "AddInstance"): factory.AddInstance}
-            etre = etree.XSLT.strparam(name)
+
             instances_path_xslt_tree = etree.XSLT(
                                                     etree.parse(
                                                                 paths,
                                                                 parser),
                                                     extensions=exten)
-
+            exten = etree.XSLT.strparam(name)
             instances_path_xslt_tree(
-                                    root, instance_type=etre)
+                                    root, instance_type=exten)
 
             # instances_path_xslt_tree = etree.XSLT(
             #     etree.parse(
@@ -1070,10 +1070,10 @@ class PLCControler:
         project = self.GetProject(debug)
         if project is not None:
             #instance_list = self.GetInstanceList(project, name, debug)
-            pou = [pou.getname() for pou in project.getpous()]
+            # pou = [pou.getname() for pou in project.getpous()]
 
-            for pou_name in pou:#project.getpous():
-                # pou_name = pou.getname()
+            for pou in project.getpous():
+                pou_name = pou.getname()
                 if self.PouIsUsed(pou_name):
                     body = pou.getbody()
                     if isinstance(body, list):
@@ -1091,12 +1091,14 @@ class PLCControler:
         return fb_types_list
 
     def PouFuncIsUsed(self, name, debug=False, pou_type=None):
+
         project = self.GetProject(debug)
         if project is not None:
-            pou = [pou for pou in project.getpous() if pou_type == "function"]
             # instance_list = self.GetInstanceList(project, name, debug)
-            for body in pou:
-                body = body.getbody()
+            for pou in project.getpous():
+                pou_name = pou.getname()
+                # if self.PouIsUsed(pou_name):
+                body = pou.getbody()
                 if isinstance(body, list):
                     body = body[0]
                 body_content = body.getcontent()
@@ -1108,24 +1110,46 @@ class PLCControler:
                             blocktype = instance.gettypeName()
                             if blocktype == name:
                                 return True
-        return False
-        #предыдущий фрагмент
-            # for pou in project.getpous():
-            #     pou_name = pou.getname()
-            #     if pou_type == "function": #self.PouIsUsed(pou_name):
-            #         body = pou.getbody()
-            #         if isinstance(body, list):
-            #             body = body[0]
-            #         body_content = body.getcontent()
-            #         body_type = body_content.getLocalTag()
-            #         if body_type in ["FBD", "LD", "SFC"]:
-            #             for instance in body.getcontentInstances():
-            #                 instance_type = instance.getLocalTag()
-            #                 if instance_type == "block":
-            #                     blocktype = instance.gettypeName()
-            #                     if blocktype == name:
-            #                         return True
 
+        return False
+
+        #
+        # project = self.GetProject(debug)
+        # if project is not None:
+        #     # instance_list = self.GetInstanceList(project, name, debug)
+        #     for pou in project.getpous():
+        #         pou_name = pou.getname()
+        #         if self.PouIsUsed(pou_name):
+        #             body = pou.getbody()
+        #             if isinstance(body, list):
+        #                 body = body[0]
+        #             body_content = body.getcontent()
+        #             body_type = body_content.getLocalTag()
+        #             if body_type in ["FBD", "LD", "SFC"]:
+        #                 for instance in body.getcontentInstances():
+        #                     instance_type = instance.getLocalTag()
+        #                     if instance_type == "block":
+        #                         blocktype = instance.gettypeName()
+        #                         if blocktype == name:
+        #                             return True
+        #предыдущий фрагмент
+        # project = self.GetProject(debug)
+        # if project is not None:
+        #     pou = [pou for pou in project.getpous() if pou_type == "function"]
+        #     # instance_list = self.GetInstanceList(project, name, debug)
+        #     for body in pou:
+        #         body = body.getbody()
+        #         if isinstance(body, list):
+        #             body = body[0]
+        #         body_content = body.getcontent()
+        #         body_type = body_content.getLocalTag()
+        #         if body_type in ["FBD", "LD", "SFC"]:
+        #             for instance in body.getcontentInstances():
+        #                 instance_type = instance.getLocalTag()
+        #                 if instance_type == "block":
+        #                     blocktype = instance.gettypeName()
+        #                     if blocktype == name:
+        #                         return True
 
     # Return if pou given by name is directly or undirectly used by the reference pou
     def PouIsUsedBy(self, name, reference, debug=False):
@@ -1679,7 +1703,7 @@ class PLCControler:
             if configuration is not None:
                 # Extract variables defined in configuration
                 return self.GetVariableDictionary(configuration, debug)
-            #1
+            #1  Отвечает за отображение глобальных переменных в окне "Конфигурационные переменные"
         return []
 
     # Return configuration variable names
@@ -1757,7 +1781,7 @@ class PLCControler:
         if interface is not None:
             # Extract variables defined in interface
             return self.GetVariableDictionary(interface, tree, debug)
-        #debug 3
+        #debug 3 Основной отвечает за отображение переменных
         return []
 
     # Replace the Pou interface by the one given
@@ -1805,7 +1829,7 @@ class PLCControler:
 
     # Return the return type of the given pou
     def GetPouInterfaceReturnType(self, pou, tree=False, debug=False):
-        start_time = datetime.now()
+
         # Verify that the pou has an interface
         if pou.interface is not None:
             # Return the return type if there is one
@@ -1834,7 +1858,7 @@ class PLCControler:
         if tree:
             return [None, ([], [])]
 
-        print(datetime.now() - start_time + "    222 ")
+
         return None
 
     # Function that add a new confnode to the confnode list
