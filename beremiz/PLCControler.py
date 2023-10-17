@@ -1040,7 +1040,7 @@ class PLCControler:
             if pou_type == "function":
                 return self.PouFuncIsUsed(name, debug, pou_type)
             else:
-                return self.GetInstanceList(project, name, debug)#len(self.GetInstanceList(project, name, debug)) > 0
+                return len(self.GetInstanceList(project, name, debug)) > 0  #self.GetInstanceList(project, name, debug)#
         return False
 
     def PouFbIsUsed(self, name, debug=False):
@@ -1112,26 +1112,6 @@ class PLCControler:
                                 return True
 
         return False
-
-        #
-        # project = self.GetProject(debug)
-        # if project is not None:
-        #     # instance_list = self.GetInstanceList(project, name, debug)
-        #     for pou in project.getpous():
-        #         pou_name = pou.getname()
-        #         if self.PouIsUsed(pou_name):
-        #             body = pou.getbody()
-        #             if isinstance(body, list):
-        #                 body = body[0]
-        #             body_content = body.getcontent()
-        #             body_type = body_content.getLocalTag()
-        #             if body_type in ["FBD", "LD", "SFC"]:
-        #                 for instance in body.getcontentInstances():
-        #                     instance_type = instance.getLocalTag()
-        #                     if instance_type == "block":
-        #                         blocktype = instance.gettypeName()
-        #                         if blocktype == name:
-        #                             return True
         #предыдущий фрагмент
         # project = self.GetProject(debug)
         # if project is not None:
@@ -1557,6 +1537,7 @@ class PLCControler:
     # Extract varlists from a list of vars
     def ExtractVarLists(self, vars):
         varlist_list = []
+
         current_varlist = None
         current_type = None
         for var in vars:
@@ -1885,7 +1866,7 @@ class PLCControler:
                  "list": [
                     datatype.getname()
                     for datatype in confnodetypes["types"].getdataTypes()
-                    if not only_locatables or self.IsLocatableDataType(datatype, debug)]}
+                    if not only_locatables or self.IsLocatableDataType(datatype)]} #, debug)]}
                 for confnodetypes in self.ConfNodeTypes]
 
     def GetVariableLocationTree(self):

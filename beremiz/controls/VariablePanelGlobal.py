@@ -139,8 +139,8 @@ class VariablePanelGlobal(VariablePanel):
         self.VariablesGrid.Bind(wx.grid.EVT_GRID_LABEL_RIGHT_CLICK, self.on_cell_right_clickGrid)
         self.VariablesGrid.Bind(wx.grid.EVT_GRID_CELL_RIGHT_CLICK, self.on_cell_right_clickGrid)
         self.VariablesGrid.Bind(wx.grid.EVT_GRID_CMD_LABEL_RIGHT_CLICK, self.on_cell_right_clickGrid)
-        # self.VariablesGrid.Bind(wx.grid.EVT_GRID_EDITOR_SHOWN,
-        #                         self.OnVariablesGridEditorShown)
+        self.VariablesGrid.Bind(wx.grid.EVT_GRID_EDITOR_SHOWN,
+                                self.OnVariablesGridEditorShown)
         self.Bind(wx.EVT_RIGHT_UP, self.on_cell_right_click)
         # self.VariablesGrid.Bind(wx.EVT_KEY_DOWN, self.)
 
