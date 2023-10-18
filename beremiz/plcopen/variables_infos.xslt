@@ -8,13 +8,13 @@
     <xsl:param name="_indent" select="0"/>
   </xsl:template>
   <xsl:variable name="project">
-    <xsl:copy-of select="document('project')/project/*"/>
+    <xsl:copy-of select="ns:GetProject()"/>
   </xsl:variable>
   <xsl:variable name="stdlib">
-    <xsl:copy-of select="document('stdlib')/stdlib/*"/>
+    <xsl:copy-of select="ns:GetStdLibs()"/>
   </xsl:variable>
   <xsl:variable name="extensions">
-    <xsl:copy-of select="document('extensions')/extensions/*"/>
+    <xsl:copy-of select="ns:GetExtensions()"/>
   </xsl:variable>
   <xsl:template match="ppx:configuration">
     <xsl:param name="_indent" select="0"/>

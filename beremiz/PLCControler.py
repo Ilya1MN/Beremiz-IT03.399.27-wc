@@ -36,6 +36,7 @@ from PLCGenerator import *
 from functools import reduce
 from natsort import natsorted
 from datetime import datetime
+from plcopen.VariableInfoCollector import VariableInfoCollector
 import time
 import asyncio
 import time
@@ -45,6 +46,9 @@ import os
 import sys
 import re
 import datetime
+
+VARIABLE_NAME_SUFFIX_MODEL = re.compile(r'(\d+)$')
+
 duration_model = re.compile("(?:([0-9]{1,2})h)?(?:([0-9]{1,2})m(?!s))?(?:([0-9]{1,2})s)?(?:([0-9]{1,3}(?:\.[0-9]*)?)ms)?")
 
 ITEMS_EDITABLE = [
@@ -189,7 +193,7 @@ class VariablesInfosFactory:
         self.Type = args[0][0]
 
     def GetType(self):
-        if self.Dimensions: #len(self.Dimensions) > 0:
+        if len(self.Dimensions) > 0:
             return ("array", self.Type, self.Dimensions)
         return self.Type
 
@@ -197,8 +201,10 @@ class VariablesInfosFactory:
         return (self.TreeStack.pop(-1), self.Dimensions)
 
     def AddDimension(self, context, *args):
-        dims =  self.AddTrans([_StringValue] * 2, args) #_translate_args([_StringValue] * 2, args)
-        self.Dimensions.append(tuple(dims))
+        self.Dimensions.append(tuple(
+            _translate_args([_StringValue] * 2, args)))
+        # dims =  self.AddTrans([_StringValue] * 2, args) #_translate_args([_StringValue] * 2, args)
+        # self.Dimensions.append(tuple(dims))
 
     def AddTree(self, context, *args):
         self.TreeStack.append([])
@@ -210,25 +216,26 @@ class VariablesInfosFactory:
 
     def AddVariable(self, context, *args):
 
+        # print(args)
         #Разбил задачу на подзадачи
         # arrAdd = self.AddVar() #[addType, addTree, addLen]
         # arrTrans = self.AddTrans(args) #_translate_args([_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2, args)
-        varsInfo = [_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2
-        addVar = _VariableInfos(*(self.AddTrans(varsInfo, args) + self.AddVar()))
+        # varsInfo = [_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2
+        # addVar = _VariableInfos(*(self.AddTrans(varsInfo, args) + self.AddVar()))
+        #
+        # self.Variables.append(addVar)
 
-        self.Variables.append(addVar)
 
-
-        # self.Variables.append(_VariableInfos(*(_translate_args(
-        #     [_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2, args) +
-        #     [self.GetType(), self.GetTree(), len(self.Variables)])))
-    def AddVar(self):
-        addType = self.GetType()
-        addTree = self.GetTree()
-        addLen =  len(self.Variables)
-        return  [addType, addTree, addLen]
-    def AddTrans(self,varsInfo, args):
-        return _translate_args(varsInfo, args)
+        self.Variables.append(_VariableInfos(*(_translate_args(
+            [_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2, args) +
+            [self.GetType(), self.GetTree(), len(self.Variables)])))
+    # def AddVar(self):
+    #     addType = self.GetType()
+    #     addTree = self.GetTree()
+    #     addLen =  len(self.Variables)
+    #     return  [addType, addTree, addLen]
+    # def AddTrans(self,varsInfo, args):
+    #     return _translate_args(varsInfo, args)
 
 # -------------------------------------------------------------------------------
 #            Helpers object for generating pou variable instance list
@@ -579,6 +586,7 @@ class PLCControler:
     def __init__(self):
         self.LastNewIndex = 0
         self.Reset()
+        self.VariableInfoCollector = VariableInfoCollector(self)
 
     # Reset PLCControler internal variables
     def Reset(self):
@@ -1097,7 +1105,7 @@ class PLCControler:
             # instance_list = self.GetInstanceList(project, name, debug)
             for pou in project.getpous():
                 pou_name = pou.getname()
-                # if self.PouIsUsed(pou_name):
+                #if self.PouIsUsed(pou_name):
                 body = pou.getbody()
                 if isinstance(body, list):
                     body = body[0]
@@ -1541,7 +1549,7 @@ class PLCControler:
         current_varlist = None
         current_type = None
         for var in vars:
-            next_type = (var.Group,
+            next_type = (#var.Group,
                          var.Class,
                          var.Option,
                          var.Location in ["", None] or
@@ -1611,10 +1619,10 @@ class PLCControler:
                 tempvar.setaddress(var.Location)
             else:
                 tempvar.setaddress(None)
-            if var.Group != "" and var.Group != (_("Default")):
-                tempvar.setgroup(var.Group)
-            else:
-                tempvar.setgroup(None)
+            # if var.Group != "" and var.Group != (_("Default")):
+            #     tempvar.setgroup(var.Group)
+            # else:
+            #     tempvar.setgroup(None)
             if var.Documentation != "":
                 ft = PLCOpenParser.CreateElement("documentation", "variable")
                 ft.setanyText(var.Documentation)
@@ -1627,25 +1635,40 @@ class PLCControler:
 
     def GetVariableDictionary(self, object_with_vars, tree=False, debug=False):
         variables = []
+
         # start_times = datetime.datetime.now()
-        factory = VariablesInfosFactory(variables)#маложрущие  # Обращаемся к классу
-        parser = etree.XMLParser()#маложрущие
-        parser.resolvers.add(LibraryResolver(self, debug))#маложрущие
-        paths = os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
-        arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree", "AddVariable"] # Берем список тек функций которые нам нужны
-        exten  = {("var_infos_ns", name): getattr(factory, name) for name in arrClass}
-
-        variables_infos_xslt_tree = etree.XSLT(
-            etree.parse(
-                paths,
-                parser),
-                extensions = exten
-        )   # второй самый жрущий элемент
-
-        exten = etree.XSLT.strparam(str(tree))
-        variables_infos_xslt_tree( object_with_vars, tree=exten) #самый жрущий по времени
+        self.VariableInfoCollector.Collect(object_with_vars,
+                                           debug, variables, tree)
         # millisec = (datetime.datetime.now() - start_times).total_seconds()
         # print(millisec)
+        # print("{0}, {1}, {2}, {3}, {4}", datetime.datetime.now(), object_with_vars, debug, variables,  tree)
+        # factory = VariablesInfosFactory(variables)#маложрущие  # Обращаемся к классу
+        #
+        # parser = etree.XMLParser()#маложрущие
+        # parser.resolvers.add(LibraryResolver(self, debug))#маложрущие
+        # paths = os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
+        # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree", "AddVariable"] # Берем список тек функций которые нам нужны
+        # exten  = {("var_infos_ns", name): getattr(factory, name) for name in arrClass}
+        #
+        # print("{4}, {5}, {6}, {7}", datetime.datetime.now(), object_with_vars, debug, str(tree))
+        # print("{7}, {8}, {9}, {10]", datetime.datetime.now(), object_with_vars, debug, str(tree))
+        # print("{10}, {11}, {12}, {13}")
+        # # print(str(factory) + "   " + str(paths) + "   " + str(arrClass) + "    " + str(exten))
+        # # start_times = datetime.datetime.now()
+        # variables_infos_xslt_tree = etree.XSLT(
+        #     etree.parse(
+        #         paths,
+        #         parser),
+        #         extensions = exten
+        # )   # второй самый жрущий элемент
+        #
+        # # start_times = datetime.datetime.now()
+        # exten = etree.XSLT.strparam(str(tree))
+        # # print(str(etree.XSLT.strparam(str(tree))) + "   jjjjjjj")
+        # #визуальное отображение элементов таблицы
+        # variables_infos_xslt_tree( object_with_vars, tree=exten) #самый жрущий по времени
+        # # millisec = (datetime.datetime.now() - start_times).total_seconds()
+        # # print(millisec)
         return variables
 
     # Add a global var to configuration to configuration
@@ -1910,7 +1933,7 @@ class PLCControler:
                 if reduce(lambda x, y: x and y, [x[0] == "ANY" or self.IsOfType(*x) for x in zip(inputs, block_inputs)], True):
                     return blocktype
             else:
-                if result_blocktype is not None:
+                if result_blocktype:
                     if inputs == "undefined":
                         return None
                     else:
@@ -1918,7 +1941,7 @@ class PLCControler:
                         result_blocktype["outputs"] = [(o[0], "ANY", o[2]) for o in result_blocktype["outputs"]]
                         return result_blocktype
                 result_blocktype = blocktype.copy()
-        if result_blocktype is not None:
+        if result_blocktype:
             return result_blocktype
         project = self.GetProject(debug)
         if project is not None:

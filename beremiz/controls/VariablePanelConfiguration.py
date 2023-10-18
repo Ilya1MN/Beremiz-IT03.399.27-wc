@@ -118,14 +118,14 @@ class VariablePanelConfiguration(VariablePanel):
         controlsGroup_sizer.AddGrowableCol(1)
 
         groupList = [(_("All")), (_("Default"))]
-        if self.Controler.GroupList is None:
-            for variable in self.Controler.GetConfigurationGlobalVars('config'):
-                if not (variable.Group in groupList):
-                    if variable.Group != '':
-                        groupList.append(variable.Group)
-            self.Controler.GroupList = groupList
-        else:
-            groupList = self.Controler.GroupList
+        # if self.Controler.GroupList is None:
+        #     for variable in self.Controler.GetConfigurationGlobalVars('config'):
+        #         if not (variable.Group in groupList):
+        #             if variable.Group != '':
+        #                 groupList.append(variable.Group)
+        #     self.Controler.GroupList = groupList
+        # else:
+        #     groupList = self.Controler.GroupList
         self.listBox.Append(groupList)
 
     def __init__(self, parent, window, controler, element_type, debug=False):
