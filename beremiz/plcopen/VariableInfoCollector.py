@@ -63,23 +63,12 @@ class VariablesInfosFactory:
         num2 = 2  # Число на которое будет увеличино количество строковых значений в списке
         self.Variables.append(_VariableInfos(*(_translate_args(
             [_StringValue] * num1 + [_BoolValue] + [_StringValue] * num2, args) +
-                                               [self.GetType(), self.GetTree()])))
+                                               [self.GetType(), self.GetTree(), len(self.Variables)])))
 
 
 class VariableInfoCollector(XSLTModelQuery):
     def __init__(self, controller):
         arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree", "AddVariable"]
-
-        # factory = VariablesInfosFactory([])
-        # for name in arrClass:
-        #     print("start     " + str(factory)  +  "    " + str(getattr(factory, name)) + "      " + str(name) + "     end")
-        # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree", "AddVariable"]
-        # for name in arrClass:
-        #     print("start     " + "    " + str(getattr(self.factory, name)) + "      " + name + "     end")
-        # exten = {("beremiz", name): getattr(self.factory, name) for name in arrClass}
-        # self.variabless = []
-        # self.factory = VariablesInfosFactory(self.variabless)
-        # print(str(self.factory) + "    kkkkkkkk")
 
         XSLTModelQuery.__init__(self,
                                 controller,
@@ -102,7 +91,7 @@ class VariableInfoCollector(XSLTModelQuery):
     def Collect(self, root, debug, variables, tree):
         # print( "{0}, {1}, {2}, {3}, {4}", datetime.datetime.now(),  root, debug, variables, tree)
         # print(str(variables)  + "      variables" )
-       с self.factory = VariablesInfosFactory(variables)
+        self.factory = VariablesInfosFactory(variables)
         self._process_xslt(root, debug, tree=str(tree))
         res = self.factory
         self.factory = None

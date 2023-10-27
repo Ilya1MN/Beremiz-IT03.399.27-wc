@@ -43,7 +43,7 @@ from plcopen.VariableInfoCollector import VariableInfoCollector
 # from plcopen.InstancesPathCollector import InstancesPathFactory
 # from plcopen.XSLTModelQuerytwo import XSLTModelQuerytwo
 # from XSLTransformtwo import XSLTransformtwo
-# from XSLTransform import LibraryResolverr
+# from plcopen.XSLTModelQuery import LibraryResolver
 from graphics.GraphicCommons import *
 from PLCGenerator import *
 from functools import reduce
@@ -67,6 +67,10 @@ NOTEBOOK_PAGES_IN = ["program", "functionBlock"]
 ScriptDirectory = paths.AbsDir(__file__)
 # Length of the buffer
 UNDO_BUFFER_LENGTH = 20
+
+
+
+
 
 class UndoBuffer:
     """
@@ -512,7 +516,6 @@ class PLCControler:
             elif words[0] != "D":
                 obj = self.GetEditedElement(tagname, debug)
             if obj is not None:
-                # return None
                 return self.POUVariablesCollector.Collect(obj, debug)
 
         return None
@@ -523,17 +526,6 @@ class PLCControler:
         instances = []
         project = self.GetProject(debug)
         if project is not None:
-            # self.InstancesPathCollector(instances)
-            # parser = etree.XMLParser()
-            # parser.resolvers.add(LibraryResolver(self, debug))
-            # self.InstancesPathCollector = InstancesPathCollector(parser)
-            # print("      lllllllllllll    " + str(paths) + "     " + str(parser) + "      " + str(extens))
-            # print("      ffffffffffffff    " + str(root) + "     " + str(debug) + "      " + str(etre))
-            # print(str(etre) + "      lllllllllllll    " + str(paths) + "     " + str(parser) + "      " + str(extens))
-            # print(str(etre) + "      lllllllllllll    " +  str(paths) + "     " + str(parser)  + "      " + str(extens))
-            # parser = etree.XMLParser()
-            # parser.resolvers.add(LibraryResolver(self, debug))
-            # self.InstancesPathCollector = InstancesPathCollector(parser)
             self.InstancesPathCollector.Collect(root, name, debug)
             return instances
 
@@ -567,26 +559,6 @@ class PLCControler:
             return self.InstanceTagnameCollector.Collect(project,
                                                          debug,
                                                          instance_path)
-            # factory = InstanceTagName(self)
-            #
-            # parser = etree.XMLParser()
-            # parser.resolvers.add(LibraryResolver(self, debug))
-            #
-            # instance_tagname_xslt_tree = etree.XSLT(
-            #     etree.parse(
-            #         os.path.join(ScriptDirectory, "plcopen", "instance_tagname.xslt"),
-            #         parser),
-            #     extensions={("beremiz", name): getattr(factory, name)
-            #                 for name in ["ConfigTagName",
-            #                              "ResourceTagName",
-            #                              "PouTagName",
-            #                              "ActionTagName",
-            #                              "TransitionTagName"]})
-            #
-            # instance_tagname_xslt_tree(
-            #     project, instance_path=etree.XSLT.strparam(instance_path))
-            #
-            # return factory.GetTagName()
 
     def GetInstanceInfos(self, instance_path, debug=False):
         tagname = self.GetPouInstanceTagName(instance_path)
@@ -1200,35 +1172,12 @@ class PLCControler:
 
     def GetVariableDictionary(self, object_with_vars, tree=False, debug=False):
         variables = []
-        # self.VariableInfoCollector = VariableInfoCollector(parser)
-        # self.VariableInfoCollector.Collect(object_with_vars, debug, variables, tree)
-        # factory = VariablesInfosFactory(variables)
-        #
-        # parser = etree.XMLParser()
-        # parser.resolvers.add(LibraryResolver(self, debug))
         # self.VariableInfoCollector = VariableInfoCollector(self)
-        start_times = datetime.datetime.now()
+        # start_times = datetime.datetime.now()
         self.VariableInfoCollector.Collect(object_with_vars, debug, variables, tree)
-        millisec = (datetime.datetime.now() - start_times).total_seconds()
-        print(millisec)
-        print(datetime.datetime.now() - start_times)
-        # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree","AddVariable"]  # Берем список тек функций которые нам нужны
-        # paths =  "variables_infos.xslt"#os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
-        # exten = {("beremiz", name): getattr(factory, name) for name in arrClass}
-        # self.VariableInfoCollector = VariableInfoCollector(parser)
-        # self.XSLTModelQuerytwo = XSLTModelQuerytwo(parser, paths, exten)
-
-        # self.XSLTModelQuerytwo.Process_xslt(object_with_vars, debug, tree= str(tree))
-        # variables_infos_xslt_tree = etree.XSLT(
-        #     etree.parse(
-        #         paths,
-        #         parser),
-        #         extensions = exten
-        # )   # второй самый жрущий элемент
-        # exten = etree.XSLT.strparam(str(tree))
-        # variables_infos_xslt_tree(
-        #     object_with_vars, tree=exten)
-
+        # millisec = (datetime.datetime.now() - start_times).total_seconds()
+        # print(millisec)
+        # print(datetime.datetime.now() - start_times)
         return variables
 
     # Add a global var to configuration to configuration
@@ -1399,23 +1348,7 @@ class PLCControler:
             # Return the return type if there is one
             return_type = pou.interface.getreturnType()
             if return_type is not None:
-                factory =  self.VariableInfoCollector.Collect(return_type, debug, [], tree)
-
-                # factory = VariablesInfosFactory([])
-                #
-                # parser = etree.XMLParser()
-                # parser.resolvers.add(LibraryResolver(self))
-                # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree",  "AddVariable"]  # Берем список тек функций которые нам нужны
-                # exten ={("beremiz", name): getattr(factory, name)  for name in arrClass}
-                # paths = os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
-                # return_type_infos_xslt_tree = etree.XSLT(
-                #     etree.parse(
-                #         paths,
-                #         parser),
-                #     extensions=exten)
-                # etre = etree.XSLT.strparam(str(tree))
-                #
-                # return_type_infos_xslt_tree( return_type, tree=etre)
+                factory = self.VariableInfoCollector.Collect(return_type, debug, [], tree)
                 if tree:
                     return [factory.GetType(), factory.GetTree()]
                 return factory.GetType()
@@ -2334,21 +2267,6 @@ class PLCControler:
         if element is not None:
             return self.BlockInstanceCollector.Collect(element, debug)
         return {}
-        # element_instances = OrderedDict()
-        # element = self.GetEditedElement(tagname, debug)
-        # if element is not None:
-        #     factory = BlockInstanceFactory(element_instances)
-        #
-        #     pou_block_instances_xslt_tree = etree.XSLT(
-        #         pou_block_instances_xslt,
-        #         extensions={
-        #             ("beremiz", name): getattr(factory, name)
-        #             for name in ["AddBlockInstance", "SetSpecificValues",
-        #                          "AddInstanceConnection", "AddConnectionLink",
-        #                          "AddLinkPoint", "AddAction"]})
-        #
-        #     pou_block_instances_xslt_tree(element)
-        # return element_instances
 
     def ClearEditedElementExecutionOrder(self, tagname):
         element = self.GetEditedElement(tagname)
