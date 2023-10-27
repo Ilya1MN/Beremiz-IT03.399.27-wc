@@ -9,8 +9,8 @@ from .XSLTModelQuery import XSLTModelQuery
 
 class InstancesPathFactory:
     """Helpers object for generating instances path list"""
-    def __init__(self):
-        self.Instances = []
+    def __init__(self, instances):
+        self.Instances = instances
 
     def AddInstance(self, context, *args):
         self.Instances.append(args[0][0])
@@ -30,9 +30,11 @@ class InstancesPathCollector(XSLTModelQuery):
         self.Instances.append(args[0][0])
 
     def Collect(self, root,  name, debug):
+        factory = InstancesPathFactory(self.Instances)
 
         # print("      vvvvvvvvvvvvvvvvv    " + str(root) + "     " + str(debug) + "      " + str(name))
         self._process_xslt(root, debug, instance_type=name)
-        res = self.Instances
-        self.Instances = []
-        return res
+        if self.Instances is not None:
+            res = self.Instances
+            self.Instances = []
+            return res

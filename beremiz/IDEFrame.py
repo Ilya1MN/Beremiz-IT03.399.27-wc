@@ -1589,12 +1589,12 @@ class IDEFrame(wx.Frame):
     #                         Types Tree Management Functions
     # -------------------------------------------------------------------------------
 
-    def RefreshProjectTreeHighlight(self):
-        if self.ProjectTree is not None:
-            root = self.ProjectTree.GetRootItem()
-            item_data = self.ProjectTree.GetItemData(root)
-            self.GenerateProjectTreeBranchHighlight(root, item_data)
-            self.ProjectTree.Refresh()
+    # def RefreshProjectTreeHighlight(self):
+    #     if self.ProjectTree is not None:
+    #         root = self.ProjectTree.GetRootItem()
+    #         item_data = self.ProjectTree.GetItemData(root)
+    #         # self.GenerateProjectTreeBranchHighlight(root, item_data)
+    #         self.ProjectTree.Refresh()
 
     def RefreshProjectTree(self):
         # Extract current selected item tagname
@@ -1616,32 +1616,32 @@ class IDEFrame(wx.Frame):
         # Select new item corresponding to previous selected item
         if tagname is not None:
             self.SelectProjectTreeItem(tagname)
-        self.RefreshProjectTreeHighlight()
+        # self.RefreshProjectTreeHighlight()
 
-    def GenerateProjectTreeBranchHighlight(self, root, infos, item_alone=False):
-        to_delete = []
-        item_name = infos["name"]
-        if infos["type"] in ITEMS_UNEDITABLE:
-            if len(infos["values"]) == 1:
-                return self.GenerateProjectTreeBranchHighlight(root, infos["values"][0], True)
-            item_name = _(item_name)
-        if infos["type"] == ITEM_POU:
-            if self.Controler.PouFbIsUsed(item_name):
-                self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.WHITE))
-            else:
-                self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.YELLOW))
-
-        item, root_cookie = self.ProjectTree.GetFirstChild(root)
-        for values in infos["values"]:
-            if values["type"] not in ITEMS_UNEDITABLE or len(values["values"]) > 0:
-                if item is None or not item.IsOk():
-                    item = self.ProjectTree.AppendItem(root, "")
-                    item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
-                self.GenerateProjectTreeBranchHighlight(item, values)
-                item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
-        while item is not None and item.IsOk():
-            to_delete.append(item)
-            item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
+    # def GenerateProjectTreeBranchHighlight(self, root, infos, item_alone=False):
+    #     to_delete = []
+    #     item_name = infos["name"]
+    #     if infos["type"] in ITEMS_UNEDITABLE:
+    #         if len(infos["values"]) == 1:
+    #             return self.GenerateProjectTreeBranchHighlight(root, infos["values"][0], True)
+    #         item_name = _(item_name)
+    #     if infos["type"] == ITEM_POU:
+    #         if self.Controler.PouFbIsUsed(item_name):
+    #             self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.WHITE))
+    #         else:
+    #             self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.YELLOW))
+    #
+    #     item, root_cookie = self.ProjectTree.GetFirstChild(root)
+    #     for values in infos["values"]:
+    #         if values["type"] not in ITEMS_UNEDITABLE or len(values["values"]) > 0:
+    #             if item is None or not item.IsOk():
+    #                 item = self.ProjectTree.AppendItem(root, "")
+    #                 item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
+    #             self.GenerateProjectTreeBranchHighlight(item, values)
+    #             item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
+    #     while item is not None and item.IsOk():
+    #         to_delete.append(item)
+    #         item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
 
 
     def GenerateProjectTreeBranch(self, root, infos, item_alone=False):
@@ -1662,10 +1662,10 @@ class IDEFrame(wx.Frame):
             if item_alone:
                 self.ProjectTree.SetItemExtraImage(root, self.Controler.GetPouType(infos["name"]))
 #20.04.2022
-            #if self.Controler.PouIsUsed(item_name):
-            #    self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.WHITE))
-            #else:
-            #    self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.YELLOW))
+            if self.Controler.PouIsUsed(item_name):
+               self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.WHITE))
+            else:
+               self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.YELLOW))
 
         elif "icon" in infos and infos["icon"] is not None:
             icon_name = infos["icon"]
@@ -2306,7 +2306,7 @@ class IDEFrame(wx.Frame):
 
     def RefreshPouInstanceVariablesPanel(self):
         self.PouInstanceVariablesPanel.RefreshView()
-        self.RefreshProjectTreeHighlight()
+        # self.RefreshProjectTreeHighlight()
 
     def OpenDebugViewer(self, instance_category, instance_path, instance_type):
         openedidx = self.IsOpened(instance_path)

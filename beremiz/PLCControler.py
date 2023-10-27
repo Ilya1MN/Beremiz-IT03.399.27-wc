@@ -43,6 +43,7 @@ from plcopen.VariableInfoCollector import VariableInfoCollector
 # from plcopen.InstancesPathCollector import InstancesPathFactory
 # from plcopen.XSLTModelQuerytwo import XSLTModelQuerytwo
 # from XSLTransformtwo import XSLTransformtwo
+# from plcopen.InstancesPathCollector import InstancesPathFactory
 # from plcopen.XSLTModelQuery import LibraryResolver
 from graphics.GraphicCommons import *
 from PLCGenerator import *
@@ -516,6 +517,7 @@ class PLCControler:
             elif words[0] != "D":
                 obj = self.GetEditedElement(tagname, debug)
             if obj is not None:
+
                 return self.POUVariablesCollector.Collect(obj, debug)
 
         return None
@@ -526,8 +528,8 @@ class PLCControler:
         instances = []
         project = self.GetProject(debug)
         if project is not None:
-            self.InstancesPathCollector.Collect(root, name, debug)
-            return instances
+           return self.InstancesPathCollector.Collect(root, name, debug)
+        return instances
 
     def FastTaskIsUse(self, project, name, debug=False):
         for root in project.getconfigurations():
@@ -1172,6 +1174,7 @@ class PLCControler:
 
     def GetVariableDictionary(self, object_with_vars, tree=False, debug=False):
         variables = []
+
         # self.VariableInfoCollector = VariableInfoCollector(self)
         # start_times = datetime.datetime.now()
         self.VariableInfoCollector.Collect(object_with_vars, debug, variables, tree)
