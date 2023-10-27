@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:func="http://exslt.org/functions" xmlns:dyn="http://exslt.org/dynamic" xmlns:str="http://exslt.org/strings" xmlns:math="http://exslt.org/math" xmlns:exsl="http://exslt.org/common" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:yml="http://fdik.org/yml" xmlns:set="http://exslt.org/sets" xmlns:ppx="http://www.plcopen.org/xml/tc6_0201" xmlns:ns="instance_tagname_ns" xmlns:regexp="http://exslt.org/regular-expressions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="ns" version="1.0" exclude-result-prefixes="ns">
+<xsl:stylesheet xmlns:func="http://exslt.org/functions" xmlns:dyn="http://exslt.org/dynamic" xmlns:str="http://exslt.org/strings" xmlns:math="http://exslt.org/math" xmlns:exsl="http://exslt.org/common" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:yml="http://fdik.org/yml" xmlns:set="http://exslt.org/sets" xmlns:ppx="http://www.plcopen.org/xml/tc6_0201" xmlns:ns="beremiz" xmlns:regexp="http://exslt.org/regular-expressions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="ns" version="1.0" exclude-result-prefixes="ns">
   <xsl:output method="xml"/>
   <xsl:variable name="space" select="'                                                                                                                                                                                                        '"/>
   <xsl:param name="autoindent" select="4"/>
@@ -86,8 +86,8 @@
             </xsl:with-param>
           </xsl:call-template>
         </xsl:variable>
-        <!--<xsl:apply-templates select="ppx:pouInstance[@name=$child_name] | ppx:task/ppx:pouInstance[@name=$child_name] | ppx:globalVars/ppx:variable[@name=$child_name]/ppx:type/*[self::ppx:derived or self::ppx:struct or self::ppx:array]">-->
-        <xsl:apply-templates select="ppx:pouInstance[@name=$child_name] | ppx:task/ppx:pouInstance[@name=$child_name] | ppx:fasttask/ppx:pouInstance[@name=$child_name | ppx:globalVars/ppx:variable[@name=$child_name]/ppx:type/*[self::ppx:derived or self::ppx:struct or self::ppx:array]">
+        <xsl:apply-templates select="ppx:pouInstance[@name=$child_name] | ppx:task/ppx:pouInstance[@name=$child_name] | ppx:globalVars/ppx:variable[@name=$child_name]/ppx:type/*[self::ppx:derived or self::ppx:struct or self::ppx:array]">
+<!--        <xsl:apply-templates select="ppx:pouInstance[@name=$child_name] | ppx:task/ppx:pouInstance[@name=$child_name] | ppx:fasttask/ppx:pouInstance[@name=$child_name | ppx:globalVars/ppx:variable[@name=$child_name]/ppx:type/*[self::ppx:derived or self::ppx:struct or self::ppx:array]">-->
           <xsl:with-param name="_indent" select="$_indent + (1) * $autoindent"/>
           <xsl:with-param name="element_path">
             <xsl:call-template name="next_path">

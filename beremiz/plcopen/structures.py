@@ -75,8 +75,8 @@ Inputs and outputs are a tuple of characteristics that are in order:
 StdBlckLibs = {libname: LoadProject(tc6fname)[0]
                for libname, tc6fname in StdTC6Libs}
 StdBlckLst = [{"name": libname, "list":
-                [GetBlockInfos(pous) for pous in lib.getpous()]}
-                for libname, lib in StdBlckLibs.items()]
+               [GetBlockInfos(pous) for pous in lib.getpous()]}
+              for libname, lib in StdBlckLibs.items()]
 
 # -------------------------------------------------------------------------------
 #                             Test identifier

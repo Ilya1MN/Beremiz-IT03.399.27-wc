@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<xsl:stylesheet xmlns:func="http://exslt.org/functions" xmlns:dyn="http://exslt.org/dynamic" xmlns:str="http://exslt.org/strings" xmlns:math="http://exslt.org/math" xmlns:exsl="http://exslt.org/common" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:yml="http://fdik.org/yml" xmlns:set="http://exslt.org/sets" xmlns:ppx="http://www.plcopen.org/xml/tc6_0201" xmlns:ns="var_infos_ns" xmlns:regexp="http://exslt.org/regular-expressions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="ns" version="1.0" exclude-result-prefixes="ns">
+<xsl:stylesheet xmlns:func="http://exslt.org/functions" xmlns:dyn="http://exslt.org/dynamic" xmlns:str="http://exslt.org/strings" xmlns:math="http://exslt.org/math" xmlns:exsl="http://exslt.org/common" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:yml="http://fdik.org/yml" xmlns:set="http://exslt.org/sets" xmlns:ppx="http://www.plcopen.org/xml/tc6_0201" xmlns:ns="beremiz" xmlns:regexp="http://exslt.org/regular-expressions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="ns" version="1.0" exclude-result-prefixes="ns">
   <xsl:output method="xml"/>
   <xsl:variable name="space" select="'                                                                                                                                                                                                        '"/>
   <xsl:param name="autoindent" select="4"/>
@@ -8,13 +8,13 @@
     <xsl:param name="_indent" select="0"/>
   </xsl:template>
   <xsl:variable name="project">
-    <xsl:copy-of select="ns:GetProject()"/>
+    <xsl:copy-of select="document('project')/project/*"/>
   </xsl:variable>
   <xsl:variable name="stdlib">
-    <xsl:copy-of select="ns:GetStdLibs()"/>
+    <xsl:copy-of select="document('stdlib')/stdlib/*"/>
   </xsl:variable>
   <xsl:variable name="extensions">
-    <xsl:copy-of select="ns:GetExtensions()"/>
+    <xsl:copy-of select="document('extensions')/extensions/*"/>
   </xsl:variable>
   <xsl:template match="ppx:configuration">
     <xsl:param name="_indent" select="0"/>

@@ -33,7 +33,7 @@ from plcopen.structures import LOCATIONDATATYPES, TestIdentifier, IEC_KEYWORDS, 
 from .CustomGrid import CustomGrid
 
 from util.BitmapLibrary import GetBitmap
-from PLCControler import _VariableInfos
+from plcopen.VariableInfoCollector import _VariableInfos
 from util.TranslationCatalogs import NoTranslate
 from .VariablePanel import VariablePanel, VariableDropTarget, VariableTable
 
@@ -118,14 +118,14 @@ class VariablePanelConfiguration(VariablePanel):
         controlsGroup_sizer.AddGrowableCol(1)
 
         groupList = [(_("All")), (_("Default"))]
-        # if self.Controler.GroupList is None:
-        #     for variable in self.Controler.GetConfigurationGlobalVars('config'):
-        #         if not (variable.Group in groupList):
-        #             if variable.Group != '':
-        #                 groupList.append(variable.Group)
-        #     self.Controler.GroupList = groupList
-        # else:
-        #     groupList = self.Controler.GroupList
+        if self.Controler.GroupList is None:
+            for variable in self.Controler.GetConfigurationGlobalVars('config'):
+                if not (variable.Group in groupList):
+                    if variable.Group != '':
+                        groupList.append(variable.Group)
+            self.Controler.GroupList = groupList
+        else:
+            groupList = self.Controler.GroupList
         self.listBox.Append(groupList)
 
     def __init__(self, parent, window, controler, element_type, debug=False):
@@ -485,6 +485,7 @@ class VariablePanelConfiguration(VariablePanel):
             self.VariablesGrid.PopupMenu(type_menu, corner_x, corner_y)
             type_menu.Destroy()
             event.Veto()
+
             value = self.Values[row].Type
             if old_value != value:
                 self.ClearLocation(row, col, value)

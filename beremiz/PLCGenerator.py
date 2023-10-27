@@ -835,12 +835,7 @@ class PouProgramGenerator:
                                     self.RelatedConnections.append(related)
                         undefined_blocks.append(instance)
             for instance in undefined_blocks:
-                # for variable in instance.inputVariables.getvariable():
-                #     if variable.getformalParameter() != "EN":
-                #        t =  self.ConnectionTypes.get(variable.connectionPointIn, "ANY")
-                #        block_infos = self.GetBlockType(instance.gettypeName(), tuple(t))
-                block_infos = self.GetBlockType(instance.gettypeName(), tuple([self.ConnectionTypes.get(variable.connectionPointIn, "ANY")
-                                                                               for variable in instance.inputVariables.getvariable() if variable.getformalParameter() != "EN"]))
+                block_infos = self.GetBlockType(instance.gettypeName(), tuple([self.ConnectionTypes.get(variable.connectionPointIn, "ANY") for variable in instance.inputVariables.getvariable() if variable.getformalParameter() != "EN"]))
                 if block_infos is not None:
                     self.ComputeBlockInputTypes(instance, block_infos, body)
                 else:

@@ -4,8 +4,10 @@
 # See COPYING file for copyrights details.
 
 
-from . XSLTModelQuery import XSLTModelQuery, _StringValue, _BoolValue, _translate_args
+from .XSLTModelQuery import XSLTModelQuery, _StringValue, _BoolValue, _translate_args
 import datetime
+
+
 # -------------------------------------------------------------------------------
 #                 Helpers object for generating pou var list
 # -------------------------------------------------------------------------------
@@ -13,7 +15,7 @@ import datetime
 
 class _VariableInfos(object):
     __slots__ = ["Name", "Class", "Option", "Location", "InitialValue",
-                 "Edit", "Documentation", "Type", "Tree", "Number"]
+                 "Edit", "Documentation", "Group", "Type", "Tree", "Number"]
 
     def __init__(self, *args):
         for attr, value in zip(self.__slots__, args):
@@ -23,8 +25,7 @@ class _VariableInfos(object):
         return _VariableInfos(*[getattr(self, attr) for attr in self.__slots__])
 
 
-class VariablesInfosFactory(object):
-    """ Helpers object for generating pou var list """
+class VariablesInfosFactory:
 
     def __init__(self, variables):
         self.Variables = variables
@@ -41,7 +42,7 @@ class VariablesInfosFactory(object):
         return self.Type
 
     def GetTree(self):
-        return (self.TreeStack.pop(-1), self.Dimensions)
+        return (self.TreeStack.pop(-1),self.Dimensions)
 
     def AddDimension(self, context, *args):
         self.Dimensions.append(tuple(
@@ -56,32 +57,52 @@ class VariablesInfosFactory(object):
         self.TreeStack[-1].append(var)
 
     def AddVariable(self, context, *args):
-        self.Variables.append(_VariableInfos(*(
-            _translate_args([_StringValue] * 5 + [_BoolValue] + [_StringValue], args) +
-            [self.GetType(), self.GetTree()])))
+        # Числа предназначены чтобы увеличить количество элементов в массиве, например
+        # [_StringValue] + [_StringValue] + [_StringValue] + [_StringValue] + [_StringValue] тоже самое что и [_StringValue] * 5
+        num1 = 5  # Число на которое будет увеличино количество строковых значений в списке
+        num2 = 2  # Число на которое будет увеличино количество строковых значений в списке
+        self.Variables.append(_VariableInfos(*(_translate_args(
+            [_StringValue] * num1 + [_BoolValue] + [_StringValue] * num2, args) +
+                                               [self.GetType(), self.GetTree()])))
 
 
 class VariableInfoCollector(XSLTModelQuery):
     def __init__(self, controller):
+        arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree", "AddVariable"]
+
+        # factory = VariablesInfosFactory([])
+        # for name in arrClass:
+        #     print("start     " + str(factory)  +  "    " + str(getattr(factory, name)) + "      " + str(name) + "     end")
+        # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree", "AddVariable"]
+        # for name in arrClass:
+        #     print("start     " + "    " + str(getattr(self.factory, name)) + "      " + name + "     end")
+        # exten = {("beremiz", name): getattr(self.factory, name) for name in arrClass}
+        # self.variabless = []
+        # self.factory = VariablesInfosFactory(self.variabless)
+        # print(str(self.factory) + "    kkkkkkkk")
+
         XSLTModelQuery.__init__(self,
                                 controller,
                                 "variables_infos.xslt",
                                 [(name, self.FactoryCaller(name))
-                                 for name in [
-                                     "SetType",
-                                     "AddDimension",
-                                     "AddTree",
-                                     "AddVarToTree",
-                                     "AddVariable"]])
+                                 for name in arrClass])
+
 
     def FactoryCaller(self, funcname):
         def CallFactory(*args):
-            return getattr(self.factory, funcname)(*args)
+            #Временный костыль
+            if self.factory is not None:
+                # print("start     " + str(self.factory) + "    1")
+            # print( str(getattr(self.factory, funcname)(*args)) + "     2" )
+            # print(funcname + "     end")
+                return getattr(self.factory, funcname)(*args)
+
         return CallFactory
 
     def Collect(self, root, debug, variables, tree):
         # print( "{0}, {1}, {2}, {3}, {4}", datetime.datetime.now(),  root, debug, variables, tree)
-        self.factory = VariablesInfosFactory(variables)
+        # print(str(variables)  + "      variables" )
+       с self.factory = VariablesInfosFactory(variables)
         self._process_xslt(root, debug, tree=str(tree))
         res = self.factory
         self.factory = None

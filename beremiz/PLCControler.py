@@ -24,19 +24,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from xml.dom import minidom
-#from types import StringType, UnicodeType, TupleType
+# from types import StringType, UnicodeType, TupleType
 from lxml import etree
 from copy import deepcopy
 from time import localtime
 from collections import OrderedDict, namedtuple
 from util.TranslationCatalogs import NoTranslate
+
 from plcopen import *
+from plcopen.types_enums import *
+from plcopen.InstancesPathCollector import InstancesPathCollector
+from plcopen.POUVariablesCollector import POUVariablesCollector
+from plcopen.InstanceTagnameCollector import InstanceTagnameCollector
+from plcopen.BlockInstanceCollector import BlockInstanceCollector
+from plcopen.VariableInfoCollector import VariableInfoCollector
+# from plcopen.VariableInfoCollector import VariablesInfosFactory
+# from plcopen.VariableInfoCollector import _VariableInfos
+# from plcopen.InstancesPathCollector import InstancesPathFactory
+# from plcopen.XSLTModelQuerytwo import XSLTModelQuerytwo
+# from XSLTransformtwo import XSLTransformtwo
+# from XSLTransform import LibraryResolverr
 from graphics.GraphicCommons import *
 from PLCGenerator import *
 from functools import reduce
 from natsort import natsorted
 from datetime import datetime
-from plcopen.VariableInfoCollector import VariableInfoCollector
 import time
 import asyncio
 import time
@@ -47,451 +59,14 @@ import sys
 import re
 import datetime
 
-VARIABLE_NAME_SUFFIX_MODEL = re.compile(r'(\d+)$')
+duration_model = re.compile(
+    "(?:([0-9]{1,2})h)?(?:([0-9]{1,2})m(?!s))?(?:([0-9]{1,2})s)?(?:([0-9]{1,3}(?:\.[0-9]*)?)ms)?")
 
-duration_model = re.compile("(?:([0-9]{1,2})h)?(?:([0-9]{1,2})m(?!s))?(?:([0-9]{1,2})s)?(?:([0-9]{1,3}(?:\.[0-9]*)?)ms)?")
-
-ITEMS_EDITABLE = [
-    ITEM_PROJECT,
-    ITEM_POU,
-    ITEM_VARIABLE,
-    ITEM_TRANSITION,
-    ITEM_ACTION,
-    ITEM_CONFIGURATION,
-    ITEM_RESOURCE,
-    ITEM_DATATYPE
-] = list(range(8))
-
-ITEMS_UNEDITABLE = [
-    ITEM_DATATYPES,
-    ITEM_FUNCTION,
-    ITEM_FUNCTIONBLOCK,
-    ITEM_PROGRAM,
-    ITEM_TRANSITIONS,
-    ITEM_ACTIONS,
-    ITEM_CONFIGURATIONS,
-    ITEM_RESOURCES,
-    ITEM_PROPERTIES
-] = list(range(8, 17))
-
-ITEMS_VARIABLE = [
-    ITEM_VAR_LOCAL,
-    ITEM_VAR_GLOBAL,
-    ITEM_VAR_EXTERNAL,
-    ITEM_VAR_TEMP,
-    ITEM_VAR_INPUT,
-    ITEM_VAR_OUTPUT,
-    ITEM_VAR_INOUT
-] = list(range(17, 24))
-
-VAR_CLASS_INFOS = {
-    "Local":    ("localVars",    ITEM_VAR_LOCAL),
-    "Global":   ("globalVars",   ITEM_VAR_GLOBAL),
-    "External": ("externalVars", ITEM_VAR_EXTERNAL),
-    "Temp":     ("tempVars",     ITEM_VAR_TEMP),
-    "Input":    ("inputVars",    ITEM_VAR_INPUT),
-    "Output":   ("outputVars",   ITEM_VAR_OUTPUT),
-    "InOut":    ("inOutVars",    ITEM_VAR_INOUT)}
-
-POU_TYPES = {
-    "program": ITEM_PROGRAM,
-    "functionBlock": ITEM_FUNCTIONBLOCK,
-    "function": ITEM_FUNCTION,
-}
-
-NOTEBOOK_PAGES_IN = ["program" , "functionBlock"]
-
-LOCATIONS_ITEMS = [LOCATION_CONFNODE,
-                   LOCATION_MODULE,
-                   LOCATION_GROUP,
-                   LOCATION_VAR_INPUT,
-                   LOCATION_VAR_OUTPUT,
-                   LOCATION_VAR_MEMORY] = list(range(6))
+NOTEBOOK_PAGES_IN = ["program", "functionBlock"]
 
 ScriptDirectory = paths.AbsDir(__file__)
-
-
-def GetUneditableNames():
-    _ = NoTranslate
-    return [_("User-defined POUs"), _("Functions"), _("Function Blocks"),
-            _("Programs"), _("Data Types"), _("Transitions"), _("Actions"),
-            _("Configurations"), _("Resources"), _("Properties")]
-
-
-UNEDITABLE_NAMES = GetUneditableNames()
-[USER_DEFINED_POUS, FUNCTIONS, FUNCTION_BLOCKS, PROGRAMS,
- DATA_TYPES, TRANSITIONS, ACTIONS, CONFIGURATIONS,
- RESOURCES, PROPERTIES] = UNEDITABLE_NAMES
-
-
-class LibraryResolver(etree.Resolver):
-    """Helper object for loading library in xslt stylesheets"""
-
-    def __init__(self, controller, debug=False):
-        self.Controller = controller
-        self.Debug = debug
-
-    def resolve(self, url, pubid, context):
-        lib_name = os.path.basename(url)
-        if lib_name in ["project", "stdlib", "extensions"]:
-            lib_el = etree.Element(lib_name)
-            if lib_name == "project":
-                lib_el.append(deepcopy(self.Controller.GetProject(self.Debug)))
-            elif lib_name == "stdlib":
-                for lib in list(StdBlckLibs.values()):
-                    lib_el.append(deepcopy(lib))
-            else:
-                for ctn in self.Controller.ConfNodeTypes:
-                    lib_el.append(deepcopy(ctn["types"]))
-            return self.resolve_string(etree.tostring(lib_el), context)
-
-# -------------------------------------------------------------------------------
-#           Helpers functions for translating list of arguments
-#                       from xslt to valid arguments
-# -------------------------------------------------------------------------------
-
-
-def _StringValue(x):
-    return x
-
-
-def _BoolValue(x):
-    return x in ["true", "0"]
-
-
-def _translate_args(translations, args):
-    return [translate(arg[0]) if len(arg) > 0 else None
-            for translate, arg in
-            zip(translations, args)]
-
-# -------------------------------------------------------------------------------
-#                 Helpers object for generating pou var list
-# -------------------------------------------------------------------------------
-
-
-class _VariableInfos(object):
-    __slots__ = ["Name", "Class", "Option", "Location", "InitialValue",
-                 "Edit", "Documentation", "Group", "Type", "Tree", "Number"]
-
-    def __init__(self, *args):
-        for attr, value in zip(self.__slots__, args):
-            setattr(self, attr, value if value is not None else "")
-
-    def copy(self):
-        return _VariableInfos(*[getattr(self, attr) for attr in self.__slots__])
-
-
-class VariablesInfosFactory:
-
-    def __init__(self, variables):
-        self.Variables = variables
-        self.TreeStack = []
-        self.Type = None
-        self.Dimensions = None
-
-    def SetType(self, context, *args):
-        self.Type = args[0][0]
-
-    def GetType(self):
-        if len(self.Dimensions) > 0:
-            return ("array", self.Type, self.Dimensions)
-        return self.Type
-
-    def GetTree(self):
-        return (self.TreeStack.pop(-1), self.Dimensions)
-
-    def AddDimension(self, context, *args):
-        self.Dimensions.append(tuple(
-            _translate_args([_StringValue] * 2, args)))
-        # dims =  self.AddTrans([_StringValue] * 2, args) #_translate_args([_StringValue] * 2, args)
-        # self.Dimensions.append(tuple(dims))
-
-    def AddTree(self, context, *args):
-        self.TreeStack.append([])
-        self.Dimensions = []
-
-    def AddVarToTree(self, context, *args):
-        var = (args[0][0], self.Type, self.GetTree())
-        self.TreeStack[-1].append(var)
-
-    def AddVariable(self, context, *args):
-
-        # print(args)
-        #Разбил задачу на подзадачи
-        # arrAdd = self.AddVar() #[addType, addTree, addLen]
-        # arrTrans = self.AddTrans(args) #_translate_args([_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2, args)
-        # varsInfo = [_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2
-        # addVar = _VariableInfos(*(self.AddTrans(varsInfo, args) + self.AddVar()))
-        #
-        # self.Variables.append(addVar)
-
-
-        self.Variables.append(_VariableInfos(*(_translate_args(
-            [_StringValue] * 5 + [_BoolValue] + [_StringValue] * 2, args) +
-            [self.GetType(), self.GetTree(), len(self.Variables)])))
-    # def AddVar(self):
-    #     addType = self.GetType()
-    #     addTree = self.GetTree()
-    #     addLen =  len(self.Variables)
-    #     return  [addType, addTree, addLen]
-    # def AddTrans(self,varsInfo, args):
-    #     return _translate_args(varsInfo, args)
-
-# -------------------------------------------------------------------------------
-#            Helpers object for generating pou variable instance list
-# -------------------------------------------------------------------------------
-
-
-def class_extraction(value):
-    class_type = {
-        "configuration": ITEM_CONFIGURATION,
-        "resource": ITEM_RESOURCE,
-        "action": ITEM_ACTION,
-        "transition": ITEM_TRANSITION,
-        "program": ITEM_PROGRAM}.get(value)
-    if class_type is not None:
-        return class_type
-
-    pou_type = POU_TYPES.get(value)
-    if pou_type is not None:
-        return pou_type
-
-    var_type = VAR_CLASS_INFOS.get(value)
-    if var_type is not None:
-        return var_type[1]
-
-    return None
-
-
-class _VariablesTreeItemInfos(object):
-    __slots__ = ["name", "var_class", "type", "edit", "debug", "variables"]
-
-    def __init__(self, *args):
-        for attr, value in zip(self.__slots__, args):
-            setattr(self, attr, value if value is not None else "")
-
-    def copy(self):
-        return _VariableTreeItem(*[getattr(self, attr) for attr in self.__slots__])
-
-
-class VariablesTreeInfosFactory:
-
-    def __init__(self):
-        self.Root = None
-
-    def GetRoot(self):
-        return self.Root
-
-    def SetRoot(self, context, *args):
-        self.Root = _VariablesTreeItemInfos(
-            *([''] + _translate_args(
-                [class_extraction, _StringValue] + [_BoolValue] * 2,
-                args) + [[]]))
-
-    def AddVariable(self, context, *args):
-        if self.Root is not None:
-            self.Root.variables.append(_VariablesTreeItemInfos(
-                *(_translate_args(
-                    [_StringValue, class_extraction, _StringValue] +
-                    [_BoolValue] * 2, args) + [[]])))
-
-
-class InstancesPathFactory:
-    """Helpers object for generating instances path list"""
-    def __init__(self, instances):
-        self.Instances = instances
-
-    def AddInstance(self, context, *args):
-        self.Instances.append(args[0][0])
-
-
-class InstanceTagName:
-    """Helpers object for generating instance tagname"""
-
-    def __init__(self, controller):
-        self.Controller = controller
-        self.TagName = None
-
-    def GetTagName(self):
-        return self.TagName
-
-    def ConfigTagName(self, context, *args):
-        self.TagName = self.Controller.ComputeConfigurationName(args[0][0])
-
-    def ResourceTagName(self, context, *args):
-        self.TagName = self.Controller.ComputeConfigurationResourceName(args[0][0], args[1][0])
-
-    def PouTagName(self, context, *args):
-        self.TagName = self.Controller.ComputePouName(args[0][0])
-
-    def ActionTagName(self, context, *args):
-        self.TagName = self.Controller.ComputePouActionName(args[0][0], args[0][1])
-
-    def TransitionTagName(self, context, *args):
-        self.TagName = self.Controller.ComputePouTransitionName(args[0][0], args[0][1])
-
-
-# -------------------------------------------------------------------------------
-#           Helpers object for generating pou block instances list
-# -------------------------------------------------------------------------------
-
-
-_Point = namedtuple("Point", ["x", "y"])
-
-_BlockInstanceInfos = namedtuple(
-    "BlockInstanceInfos",
-    ["type", "id", "x", "y", "width", "height", "specific_values", "inputs", "outputs"])
-
-_BlockSpecificValues = (
-    namedtuple("BlockSpecificValues",
-               ["name", "execution_order"]),
-    [_StringValue, int])
-_VariableSpecificValues = (
-    namedtuple("VariableSpecificValues",
-               ["name", "value_type", "execution_order"]),
-    [_StringValue, _StringValue, int])
-_ConnectionSpecificValues = (
-    namedtuple("ConnectionSpecificValues", ["name"]),
-    [_StringValue])
-
-_PowerRailSpecificValues = (
-    namedtuple("PowerRailSpecificValues", ["connectors"]),
-    [int])
-
-_LDElementSpecificValues = (
-    namedtuple("LDElementSpecificValues",
-               ["name", "negated", "edge", "storage", "execution_order"]),
-    [_StringValue, _BoolValue, _StringValue, _StringValue, int])
-
-_DivergenceSpecificValues = (
-    namedtuple("DivergenceSpecificValues", ["connectors"]),
-    [int])
-
-_SpecificValuesTuples = {
-    "comment": (
-        namedtuple("CommentSpecificValues", ["content"]),
-        [_StringValue]),
-    "input": _VariableSpecificValues,
-    "output": _VariableSpecificValues,
-    "inout": _VariableSpecificValues,
-    "connector": _ConnectionSpecificValues,
-    "continuation": _ConnectionSpecificValues,
-    "leftPowerRail": _PowerRailSpecificValues,
-    "rightPowerRail": _PowerRailSpecificValues,
-    "contact": _LDElementSpecificValues,
-    "coil": _LDElementSpecificValues,
-    "step": (
-        namedtuple("StepSpecificValues", ["name", "initial", "action"]),
-        [_StringValue, _BoolValue, lambda x: x]),
-    "transition": (
-        namedtuple("TransitionSpecificValues",
-                   ["priority", "condition_type", "condition", "connection"]),
-        [int, _StringValue, _StringValue, lambda x: x]),
-    "selectionDivergence": _DivergenceSpecificValues,
-    "selectionConvergence": _DivergenceSpecificValues,
-    "simultaneousDivergence": _DivergenceSpecificValues,
-    "simultaneousConvergence": _DivergenceSpecificValues,
-    "jump": (
-        namedtuple("JumpSpecificValues", ["target"]),
-        [_StringValue]),
-    "actionBlock": (
-        namedtuple("ActionBlockSpecificValues", ["actions"]),
-        [lambda x: x]),
-}
-
-_InstanceConnectionInfos = namedtuple(
-    "InstanceConnectionInfos",
-    ["name", "negated", "edge", "position", "links"])
-
-_ConnectionLinkInfos = namedtuple(
-    "ConnectionLinkInfos",
-    ["refLocalId", "formalParameter", "points"])
-
-
-class _ActionInfos(object):
-    __slots__ = ["qualifier", "type", "value", "duration", "indicator"]
-
-    def __init__(self, *args):
-        for attr, value in zip(self.__slots__, args):
-            setattr(self, attr, value if value is not None else "")
-
-    def copy(self):
-        return _ActionInfos(*[getattr(self, attr) for attr in self.__slots__])
-
-
-class BlockInstanceFactory:
-
-    def __init__(self, block_instances):
-        self.BlockInstances = block_instances
-        self.CurrentInstance = None
-        self.SpecificValues = None
-        self.CurrentConnection = None
-        self.CurrentLink = None
-
-    def SetSpecificValues(self, context, *args):
-        self.SpecificValues = list(args)
-        self.CurrentInstance = None
-        self.CurrentConnection = None
-        self.CurrentLink = None
-
-    def AddBlockInstance(self, context, *args):
-        specific_values_tuple, specific_values_translation = \
-            _SpecificValuesTuples.get(args[0][0], _BlockSpecificValues)
-
-        if args[0][0] == "step" and len(self.SpecificValues) < 3 or \
-           args[0][0] == "transition" and len(self.SpecificValues) < 4:
-            self.SpecificValues.append([None])
-        elif args[0][0] == "actionBlock" and len(self.SpecificValues) < 1:
-            self.SpecificValues.append([[]])
-        specific_values = specific_values_tuple(*_translate_args(
-            specific_values_translation, self.SpecificValues))
-        self.SpecificValues = None
-
-        self.CurrentInstance = _BlockInstanceInfos(
-            *(_translate_args([_StringValue, int] + [float] * 4, args) +
-              [specific_values, [], []]))
-
-        self.BlockInstances[self.CurrentInstance.id] = self.CurrentInstance
-
-    def AddInstanceConnection(self, context, *args):
-        connection_args = _translate_args(
-            [_StringValue] * 2 + [_BoolValue, _StringValue] + [float] * 2, args)
-
-        self.CurrentConnection = _InstanceConnectionInfos(
-            *(connection_args[1:4] + [
-                _Point(*connection_args[4:6]), []]))
-
-        if self.CurrentInstance is not None:
-            if connection_args[0] == "input":
-                self.CurrentInstance.inputs.append(self.CurrentConnection)
-            else:
-                self.CurrentInstance.outputs.append(self.CurrentConnection)
-        else:
-            self.SpecificValues.append([self.CurrentConnection])
-
-    def AddConnectionLink(self, context, *args):
-        self.CurrentLink = _ConnectionLinkInfos(
-            *(_translate_args([int, _StringValue], args) + [[]]))
-        self.CurrentConnection.links.append(self.CurrentLink)
-
-    def AddLinkPoint(self, context, *args):
-        self.CurrentLink.points.append(_Point(
-            *_translate_args([float] * 2, args)))
-
-    def AddAction(self, context, *args):
-        if len(self.SpecificValues) == 0:
-            self.SpecificValues.append([[]])
-        translated_args = _translate_args([_StringValue] * 5, args)
-        self.SpecificValues[0][0].append(_ActionInfos(*translated_args))
-
-
-pou_block_instances_xslt = etree.parse(
-    os.path.join(ScriptDirectory, "plcopen", "pou_block_instances.xslt"))
-
-
 # Length of the buffer
 UNDO_BUFFER_LENGTH = 20
-
 
 class UndoBuffer:
     """
@@ -586,7 +161,17 @@ class PLCControler:
     def __init__(self):
         self.LastNewIndex = 0
         self.Reset()
+        # parser = etree.XMLParser()
+        # parser.resolvers.add(LibraryResolver(self, False))
+        self.InstancesPathCollector = InstancesPathCollector(self)
+        self.POUVariablesCollector = POUVariablesCollector(self)
+        self.InstanceTagnameCollector = InstanceTagnameCollector(self)
+        self.BlockInstanceCollector = BlockInstanceCollector(self)
         self.VariableInfoCollector = VariableInfoCollector(self)
+
+        # self.InstancesPathCollector = InstancesPathCollector(self, os.path.join(ScriptDirectory, "plcopen", "instances_path.xslt"))
+        # self.InstancesPathFactory = InstancesPathFactory(self)
+        # self.XSLTModelQuery = XSLTModelQuery(self)
 
     # Reset PLCControler internal variables
     def Reset(self):
@@ -755,18 +340,18 @@ class PLCControler:
                     "values": []})
             pou_types = {
                 "function": {
-                    "name":   FUNCTIONS,
-                    "type":   ITEM_FUNCTION,
+                    "name": FUNCTIONS,
+                    "type": ITEM_FUNCTION,
                     "values": []
                 },
                 "functionBlock": {
-                    "name":   FUNCTION_BLOCKS,
-                    "type":   ITEM_FUNCTIONBLOCK,
+                    "name": FUNCTION_BLOCKS,
+                    "type": ITEM_FUNCTIONBLOCK,
                     "values": []
                 },
                 "program": {
-                    "name":   PROGRAMS,
-                    "type":   ITEM_PROGRAM,
+                    "name": PROGRAMS,
+                    "type": ITEM_PROGRAM,
                     "values": []
                 }
             }
@@ -825,10 +410,13 @@ class PLCControler:
         if project is not None:
             InfoGlobVar = {}
             GlobalVariables = natsorted(self.GetConfigurationGlobalVars('config'), key=lambda x: x.Name.lower())
-            if GlobalVariables: #len(GlobalVariables) > 0:
-                InfoGlobVar = {"name": _("Global Variables"), "type": ITEM_CONFIGURATIONS, "values": [], "index_var": int}
+            if GlobalVariables:  # len(GlobalVariables) > 0:
+                InfoGlobVar = {"name": _("Global Variables"), "type": ITEM_CONFIGURATIONS, "values": [],
+                               "index_var": int}
                 for GlobalVar in GlobalVariables:
-                    InfoGlobVar["values"].append({"name": GlobalVar.Name + ", " + GlobalVar.Type, "type": ITEM_VARIABLE, "values": [], "index_var": GlobalVar.Number})
+                    InfoGlobVar["values"].append(
+                        {"name": GlobalVar.Name + ", " + GlobalVar.Type, "type": ITEM_VARIABLE, "values": [],
+                         "index_var": GlobalVar.Number})
 
             pou_types = {
                 "function": {
@@ -861,14 +449,15 @@ class PLCControler:
                              "index_var": int,
                              "notPage": int}
                 pou_values = []
-                pou_variables = natsorted(self.GetEditedElementInterfaceVars("P::" + pou.getname()), key=lambda x: x.Name.lower())
+                pou_variables = natsorted(self.GetEditedElementInterfaceVars("P::" + pou.getname()),
+                                          key=lambda x: x.Name.lower())
                 if pou_variables is not None:
                     for pou_var in pou_variables:
                         try:
                             pou_values.append({"name": pou_var.Name + ", " + pou_var.Type,
-                                           "type": ITEM_VAR_LOCAL,
-                                           "values":[],
-                                           "index_var": pou_var.Number})
+                                               "type": ITEM_VAR_LOCAL,
+                                               "values": [],
+                                               "index_var": pou_var.Number})
                         except:
                             pass
                 if pou_type in pou_types:
@@ -886,47 +475,36 @@ class PLCControler:
                         "values": [],
                         "index_var": int}
                     resources_variables = self.GetConfigurationResourceGlobalVars(config.getname(), resource_name)
-                    if resources_variables: #len(resources_variables) > 0:
+                    if resources_variables:  # len(resources_variables) > 0:
                         try:
                             resources_variables = natsorted(resources_variables, key=lambda x: x.Name.lower())
                         except:
                             pass
                         for ResurceVar in resources_variables:
-                            resource_infos["values"].append({"name": ResurceVar.Name + ", " + ResurceVar.Type, "type": ITEM_VAR_GLOBAL, "values": [], "index_var": ResurceVar.Number})
-                        if resource_infos["values"]: #len(resource_infos["values"]) > 0:
+                            resource_infos["values"].append(
+                                {"name": ResurceVar.Name + ", " + ResurceVar.Type, "type": ITEM_VAR_GLOBAL,
+                                 "values": [], "index_var": ResurceVar.Number})
+                        if resource_infos["values"]:  # len(resource_infos["values"]) > 0:
                             resources["values"].append(resource_infos)
                         for res in resources["values"]:
-                            if res["values"]: #len(res["values"]) > 0:
+                            if res["values"]:  # len(res["values"]) > 0:
                                 configurations["values"].append(resources)
             infos = list()
-            if InfoGlobVar:#len(InfoGlobVar) > 0:
-                if InfoGlobVar["values"]: #len(InfoGlobVar["values"]) > 0:
+            if InfoGlobVar:  # len(InfoGlobVar) > 0:
+                if InfoGlobVar["values"]:  # len(InfoGlobVar["values"]) > 0:
                     infos.append(InfoGlobVar)
             for pou in pou_types:
-                if pou_types[pou]["values"]: # len(pou_types[pou]["values"]):
+                if pou_types[pou]["values"]:  # len(pou_types[pou]["values"]):
                     infos.append(pou_types[pou])
             for configuration in configurations["values"]:
-                if configuration["values"]: #len(configuration["values"]) > 0:
+                if configuration["values"]:  # len(configuration["values"]) > 0:
                     infos.append(configuration)
             return infos
         return None
 
     def GetPouVariables(self, tagname, debug=False):
-        pou_type = None
         project = self.GetProject(debug)
         if project is not None:
-            factory = VariablesTreeInfosFactory()
-
-            parser = etree.XMLParser()
-            parser.resolvers.add(LibraryResolver(self, debug))
-
-            pou_variable_xslt_tree = etree.XSLT(
-                etree.parse(
-                    os.path.join(ScriptDirectory, "plcopen", "pou_variables.xslt"),
-                    parser),
-                extensions={("pou_vars_ns", name): getattr(factory, name)
-                            for name in ["SetRoot", "AddVariable"]})
-
             obj = None
             words = tagname.split("::")
             if words[0] == "P":
@@ -934,42 +512,30 @@ class PLCControler:
             elif words[0] != "D":
                 obj = self.GetEditedElement(tagname, debug)
             if obj is not None:
-                pou_variable_xslt_tree(obj)
-                return factory.GetRoot()
+                # return None
+                return self.POUVariablesCollector.Collect(obj, debug)
 
         return None
 
     def GetInstanceList(self, root, name, debug=False):
+
+        # return self.InstancesPathCollector.Collect(root, name, debug)
         instances = []
         project = self.GetProject(debug)
         if project is not None:
-            factory = InstancesPathFactory(instances)
-
-            parser = etree.XMLParser()
-            parser.resolvers.add(LibraryResolver(self, debug))
-            paths = os.path.join(ScriptDirectory, "plcopen", "instances_path.xslt")
-            exten = { ("instances_ns", "AddInstance"): factory.AddInstance}
-
-            instances_path_xslt_tree = etree.XSLT(
-                                                    etree.parse(
-                                                                paths,
-                                                                parser),
-                                                    extensions=exten)
-            exten = etree.XSLT.strparam(name)
-            instances_path_xslt_tree(
-                                    root, instance_type=exten)
-
-            # instances_path_xslt_tree = etree.XSLT(
-            #     etree.parse(
-            #         os.path.join(ScriptDirectory, "plcopen", "instances_path.xslt"),
-            #         parser),
-            #     extensions={
-            #         ("instances_ns", "AddInstance"): factory.AddInstance})
-            #
-            # instances_path_xslt_tree(
-            #     root, instance_type=etree.XSLT.strparam(name))
-
-        return instances
+            # self.InstancesPathCollector(instances)
+            # parser = etree.XMLParser()
+            # parser.resolvers.add(LibraryResolver(self, debug))
+            # self.InstancesPathCollector = InstancesPathCollector(parser)
+            # print("      lllllllllllll    " + str(paths) + "     " + str(parser) + "      " + str(extens))
+            # print("      ffffffffffffff    " + str(root) + "     " + str(debug) + "      " + str(etre))
+            # print(str(etre) + "      lllllllllllll    " + str(paths) + "     " + str(parser) + "      " + str(extens))
+            # print(str(etre) + "      lllllllllllll    " +  str(paths) + "     " + str(parser)  + "      " + str(extens))
+            # parser = etree.XMLParser()
+            # parser.resolvers.add(LibraryResolver(self, debug))
+            # self.InstancesPathCollector = InstancesPathCollector(parser)
+            self.InstancesPathCollector.Collect(root, name, debug)
+            return instances
 
     def FastTaskIsUse(self, project, name, debug=False):
         for root in project.getconfigurations():
@@ -991,31 +557,36 @@ class PLCControler:
             elif words[0] in ['T', 'A']:
                 return ["%s.%s" % (instance, words[2])
                         for instance in self.SearchPouInstances(
-                            self.ComputePouName(words[1]), debug)]
+                        self.ComputePouName(words[1]), debug)]
         return []
 
     def GetPouInstanceTagName(self, instance_path, debug=False):
         project = self.GetProject(debug)
-        factory = InstanceTagName(self)
 
-        parser = etree.XMLParser()
-        parser.resolvers.add(LibraryResolver(self, debug))
-
-        instance_tagname_xslt_tree = etree.XSLT(
-            etree.parse(
-                os.path.join(ScriptDirectory, "plcopen", "instance_tagname.xslt"),
-                parser),
-            extensions={("instance_tagname_ns", name): getattr(factory, name)
-                        for name in ["ConfigTagName",
-                                     "ResourceTagName",
-                                     "PouTagName",
-                                     "ActionTagName",
-                                     "TransitionTagName"]})
-
-        instance_tagname_xslt_tree(
-            project, instance_path=etree.XSLT.strparam(instance_path))
-
-        return factory.GetTagName()
+        if project is not None:
+            return self.InstanceTagnameCollector.Collect(project,
+                                                         debug,
+                                                         instance_path)
+            # factory = InstanceTagName(self)
+            #
+            # parser = etree.XMLParser()
+            # parser.resolvers.add(LibraryResolver(self, debug))
+            #
+            # instance_tagname_xslt_tree = etree.XSLT(
+            #     etree.parse(
+            #         os.path.join(ScriptDirectory, "plcopen", "instance_tagname.xslt"),
+            #         parser),
+            #     extensions={("beremiz", name): getattr(factory, name)
+            #                 for name in ["ConfigTagName",
+            #                              "ResourceTagName",
+            #                              "PouTagName",
+            #                              "ActionTagName",
+            #                              "TransitionTagName"]})
+            #
+            # instance_tagname_xslt_tree(
+            #     project, instance_path=etree.XSLT.strparam(instance_path))
+            #
+            # return factory.GetTagName()
 
     def GetInstanceInfos(self, instance_path, debug=False):
         tagname = self.GetPouInstanceTagName(instance_path)
@@ -1048,7 +619,7 @@ class PLCControler:
             if pou_type == "function":
                 return self.PouFuncIsUsed(name, debug, pou_type)
             else:
-                return len(self.GetInstanceList(project, name, debug)) > 0  #self.GetInstanceList(project, name, debug)#
+                return self.GetInstanceList(project, name, debug)  # len(self.GetInstanceList(project, name, debug)) > 0
         return False
 
     def PouFbIsUsed(self, name, debug=False):
@@ -1077,11 +648,11 @@ class PLCControler:
         fb_types_list = []
         project = self.GetProject(debug)
         if project is not None:
-            #instance_list = self.GetInstanceList(project, name, debug)
-            # pou = [pou.getname() for pou in project.getpous()]
+            # instance_list = self.GetInstanceList(project, name, debug)
+            pou = [pou.getname() for pou in project.getpous()]
 
-            for pou in project.getpous():
-                pou_name = pou.getname()
+            for pou_name in pou:  # project.getpous():
+                # pou_name = pou.getname()
                 if self.PouIsUsed(pou_name):
                     body = pou.getbody()
                     if isinstance(body, list):
@@ -1099,14 +670,12 @@ class PLCControler:
         return fb_types_list
 
     def PouFuncIsUsed(self, name, debug=False, pou_type=None):
-
         project = self.GetProject(debug)
         if project is not None:
+            pou = [pou for pou in project.getpous() if pou_type == "function"]
             # instance_list = self.GetInstanceList(project, name, debug)
-            for pou in project.getpous():
-                pou_name = pou.getname()
-                #if self.PouIsUsed(pou_name):
-                body = pou.getbody()
+            for body in pou:
+                body = body.getbody()
                 if isinstance(body, list):
                     body = body[0]
                 body_content = body.getcontent()
@@ -1118,15 +687,12 @@ class PLCControler:
                             blocktype = instance.gettypeName()
                             if blocktype == name:
                                 return True
-
         return False
-        #предыдущий фрагмент
-        # project = self.GetProject(debug)
-        # if project is not None:
-        #     pou = [pou for pou in project.getpous() if pou_type == "function"]
-        #     # instance_list = self.GetInstanceList(project, name, debug)
-        #     for body in pou:
-        #         body = body.getbody()
+        # предыдущий фрагмент
+        # for pou in project.getpous():
+        #     pou_name = pou.getname()
+        #     if pou_type == "function": #self.PouIsUsed(pou_name):
+        #         body = pou.getbody()
         #         if isinstance(body, list):
         #             body = body[0]
         #         body_content = body.getcontent()
@@ -1161,7 +727,7 @@ class PLCControler:
                     self.ProgramFilePath = filepath
                 return program_text, errors, warnings
             except PLCGenException as e:
-                #errors.append(e.message)
+                # errors.append(e.message)
                 errors.append(e)
         else:
             errors.append("No project opened")
@@ -1188,7 +754,8 @@ class PLCControler:
             else:
                 next_row = row
                 next_col = col + len(chunk)
-            if (next_row > from_location[0] or next_row == from_location[0] and next_col >= from_location[1]) and len(chunk_infos) > 0:
+            if (next_row > from_location[0] or next_row == from_location[0] and next_col >= from_location[1]) and len(
+                    chunk_infos) > 0:
                 infos.append((chunk_infos, (row, col)))
             if next_row == to_location[0] and next_col > to_location[1] or next_row > to_location[0]:
                 return infos
@@ -1273,7 +840,7 @@ class PLCControler:
             # function blocks cannot be pasted as functions,
             # programs cannot be pasted as functions or function blocks
             if orig_type == 'functionBlock' and pou_type == 'function' or \
-               orig_type == 'program' and pou_type in ['function', 'functionBlock']:
+                    orig_type == 'program' and pou_type in ['function', 'functionBlock']:
                 msg = _('''{a1} "{a2}" can't be pasted as a {a3}.''').format(a1=orig_type, a2=name, a3=pou_type)
                 return msg
 
@@ -1545,11 +1112,10 @@ class PLCControler:
     # Extract varlists from a list of vars
     def ExtractVarLists(self, vars):
         varlist_list = []
-
         current_varlist = None
         current_type = None
         for var in vars:
-            next_type = (#var.Group,
+            next_type = (var.Group,
                          var.Class,
                          var.Option,
                          var.Location in ["", None] or
@@ -1619,10 +1185,10 @@ class PLCControler:
                 tempvar.setaddress(var.Location)
             else:
                 tempvar.setaddress(None)
-            # if var.Group != "" and var.Group != (_("Default")):
-            #     tempvar.setgroup(var.Group)
-            # else:
-            #     tempvar.setgroup(None)
+            if var.Group != "" and var.Group != (_("Default")):
+                tempvar.setgroup(var.Group)
+            else:
+                tempvar.setgroup(None)
             if var.Documentation != "":
                 ft = PLCOpenParser.CreateElement("documentation", "variable")
                 ft.setanyText(var.Documentation)
@@ -1632,43 +1198,37 @@ class PLCControler:
             current_varlist.appendvariable(tempvar)
         return varlist_list
 
-
     def GetVariableDictionary(self, object_with_vars, tree=False, debug=False):
         variables = []
+        # self.VariableInfoCollector = VariableInfoCollector(parser)
+        # self.VariableInfoCollector.Collect(object_with_vars, debug, variables, tree)
+        # factory = VariablesInfosFactory(variables)
+        #
+        # parser = etree.XMLParser()
+        # parser.resolvers.add(LibraryResolver(self, debug))
+        # self.VariableInfoCollector = VariableInfoCollector(self)
+        start_times = datetime.datetime.now()
+        self.VariableInfoCollector.Collect(object_with_vars, debug, variables, tree)
+        millisec = (datetime.datetime.now() - start_times).total_seconds()
+        print(millisec)
+        print(datetime.datetime.now() - start_times)
+        # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree","AddVariable"]  # Берем список тек функций которые нам нужны
+        # paths =  "variables_infos.xslt"#os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
+        # exten = {("beremiz", name): getattr(factory, name) for name in arrClass}
+        # self.VariableInfoCollector = VariableInfoCollector(parser)
+        # self.XSLTModelQuerytwo = XSLTModelQuerytwo(parser, paths, exten)
 
-        # start_times = datetime.datetime.now()
-        self.VariableInfoCollector.Collect(object_with_vars,
-                                           debug, variables, tree)
-        # millisec = (datetime.datetime.now() - start_times).total_seconds()
-        # print(millisec)
-        # print("{0}, {1}, {2}, {3}, {4}", datetime.datetime.now(), object_with_vars, debug, variables,  tree)
-        # factory = VariablesInfosFactory(variables)#маложрущие  # Обращаемся к классу
-        #
-        # parser = etree.XMLParser()#маложрущие
-        # parser.resolvers.add(LibraryResolver(self, debug))#маложрущие
-        # paths = os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
-        # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree", "AddVariable"] # Берем список тек функций которые нам нужны
-        # exten  = {("var_infos_ns", name): getattr(factory, name) for name in arrClass}
-        #
-        # print("{4}, {5}, {6}, {7}", datetime.datetime.now(), object_with_vars, debug, str(tree))
-        # print("{7}, {8}, {9}, {10]", datetime.datetime.now(), object_with_vars, debug, str(tree))
-        # print("{10}, {11}, {12}, {13}")
-        # # print(str(factory) + "   " + str(paths) + "   " + str(arrClass) + "    " + str(exten))
-        # # start_times = datetime.datetime.now()
+        # self.XSLTModelQuerytwo.Process_xslt(object_with_vars, debug, tree= str(tree))
         # variables_infos_xslt_tree = etree.XSLT(
         #     etree.parse(
         #         paths,
         #         parser),
         #         extensions = exten
         # )   # второй самый жрущий элемент
-        #
-        # # start_times = datetime.datetime.now()
         # exten = etree.XSLT.strparam(str(tree))
-        # # print(str(etree.XSLT.strparam(str(tree))) + "   jjjjjjj")
-        # #визуальное отображение элементов таблицы
-        # variables_infos_xslt_tree( object_with_vars, tree=exten) #самый жрущий по времени
-        # # millisec = (datetime.datetime.now() - start_times).total_seconds()
-        # # print(millisec)
+        # variables_infos_xslt_tree(
+        #     object_with_vars, tree=exten)
+
         return variables
 
     # Add a global var to configuration to configuration
@@ -1695,7 +1255,7 @@ class PLCControler:
                     in self.ExtractVarLists(vars)])
 
     def SetGroupVariables(self, name, vars):
-        #if self.Project is not None:
+        # if self.Project is not None:
         pass
 
     # Return the configuration globalvars
@@ -1707,7 +1267,7 @@ class PLCControler:
             if configuration is not None:
                 # Extract variables defined in configuration
                 return self.GetVariableDictionary(configuration, debug)
-            #1  Отвечает за отображение глобальных переменных в окне "Конфигурационные переменные"
+            # 1
         return []
 
     # Return configuration variable names
@@ -1757,7 +1317,7 @@ class PLCControler:
             if resource is not None:
                 # Extract variables defined in configuration
                 return self.GetVariableDictionary(resource, debug)
-            #debug 2
+            # debug 2
         return []
 
     # Return resource variable names
@@ -1785,7 +1345,7 @@ class PLCControler:
         if interface is not None:
             # Extract variables defined in interface
             return self.GetVariableDictionary(interface, tree, debug)
-        #debug 3 Основной отвечает за отображение переменных
+        # debug 3
         return []
 
     # Replace the Pou interface by the one given
@@ -1833,28 +1393,29 @@ class PLCControler:
 
     # Return the return type of the given pou
     def GetPouInterfaceReturnType(self, pou, tree=False, debug=False):
-
+        # start_time = datetime.now()
         # Verify that the pou has an interface
         if pou.interface is not None:
             # Return the return type if there is one
             return_type = pou.interface.getreturnType()
             if return_type is not None:
+                factory =  self.VariableInfoCollector.Collect(return_type, debug, [], tree)
 
-                factory = VariablesInfosFactory([])
-
-                parser = etree.XMLParser()
-                parser.resolvers.add(LibraryResolver(self))
-                arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree"]  # Берем список тек функций которые нам нужны
-                exten ={("var_infos_ns", name): getattr(factory, name)  for name in arrClass}
-                paths = os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
-                return_type_infos_xslt_tree = etree.XSLT(
-                    etree.parse(
-                        paths,
-                        parser),
-                    extensions=exten)
-                etre = etree.XSLT.strparam(str(tree))
-
-                return_type_infos_xslt_tree( return_type, tree=etre)
+                # factory = VariablesInfosFactory([])
+                #
+                # parser = etree.XMLParser()
+                # parser.resolvers.add(LibraryResolver(self))
+                # arrClass = ["SetType", "AddDimension", "AddTree", "AddVarToTree",  "AddVariable"]  # Берем список тек функций которые нам нужны
+                # exten ={("beremiz", name): getattr(factory, name)  for name in arrClass}
+                # paths = os.path.join(ScriptDirectory, "plcopen", "variables_infos.xslt")
+                # return_type_infos_xslt_tree = etree.XSLT(
+                #     etree.parse(
+                #         paths,
+                #         parser),
+                #     extensions=exten)
+                # etre = etree.XSLT.strparam(str(tree))
+                #
+                # return_type_infos_xslt_tree( return_type, tree=etre)
                 if tree:
                     return [factory.GetType(), factory.GetTree()]
                 return factory.GetType()
@@ -1862,7 +1423,7 @@ class PLCControler:
         if tree:
             return [None, ([], [])]
 
-
+        # print(datetime.now() - start_time + "    222 ")
         return None
 
     # Function that add a new confnode to the confnode list
@@ -1887,9 +1448,9 @@ class PLCControler:
     def GetConfNodeDataTypes(self, exclude=None, only_locatables=False):
         return [{"name": _("%s Data Types") % confnodetypes["name"],
                  "list": [
-                    datatype.getname()
-                    for datatype in confnodetypes["types"].getdataTypes()
-                    if not only_locatables or self.IsLocatableDataType(datatype)]} #, debug)]}
+                     datatype.getname()
+                     for datatype in confnodetypes["types"].getdataTypes()
+                     if not only_locatables or self.IsLocatableDataType(datatype, debug)]}
                 for confnodetypes in self.ConfNodeTypes]
 
     def GetVariableLocationTree(self):
@@ -1930,10 +1491,11 @@ class PLCControler:
         for sectioname, blocktype in self.TotalTypesDict.get(typename, []):
             if inputs is not None and inputs != "undefined":
                 block_inputs = tuple([var_type for name, var_type, modifier in blocktype["inputs"]])
-                if reduce(lambda x, y: x and y, [x[0] == "ANY" or self.IsOfType(*x) for x in zip(inputs, block_inputs)], True):
+                if reduce(lambda x, y: x and y, [x[0] == "ANY" or self.IsOfType(*x) for x in zip(inputs, block_inputs)],
+                          True):
                     return blocktype
             else:
-                if result_blocktype:
+                if result_blocktype is not None:
                     if inputs == "undefined":
                         return None
                     else:
@@ -1941,7 +1503,7 @@ class PLCControler:
                         result_blocktype["outputs"] = [(o[0], "ANY", o[2]) for o in result_blocktype["outputs"]]
                         return result_blocktype
                 result_blocktype = blocktype.copy()
-        if result_blocktype:
+        if result_blocktype is not None:
             return result_blocktype
         project = self.GetProject(debug)
         if project is not None:
@@ -2183,8 +1745,8 @@ class PLCControler:
         return False
 
     def IsNumType(self, typename, debug=False):
-        return self.IsOfType(typename, "ANY_NUM", debug) or\
-               self.IsOfType(typename, "ANY_BIT", debug)
+        return self.IsOfType(typename, "ANY_NUM", debug) or \
+            self.IsOfType(typename, "ANY_BIT", debug)
 
     def GetDataTypeRange(self, typename, debug=False):
         range = DataTypeRange.get(typename)
@@ -2226,8 +1788,8 @@ class PLCControler:
                 if basetype_content_type == "enum":
                     return [value.getname()
                             for value in basetype_content.xpath(
-                                "ppx:values/ppx:value",
-                                namespaces=PLCOpenParser.NSMAP)]
+                            "ppx:values/ppx:value",
+                            namespaces=PLCOpenParser.NSMAP)]
                 elif basetype_content_type == "derived":
                     return self.GetEnumeratedDataValues(basetype_content.getname(), debug)
         else:
@@ -2641,8 +2203,8 @@ class PLCControler:
                     for instance in element.getinstances():
                         if isinstance(
                                 instance,
-                                (PLCOpenParser.GetElementClass("step",         "sfcObjects"),
-                                 PLCOpenParser.GetElementClass("connector",    "commonObjects"),
+                                (PLCOpenParser.GetElementClass("step", "sfcObjects"),
+                                 PLCOpenParser.GetElementClass("connector", "commonObjects"),
                                  PLCOpenParser.GetElementClass("continuation", "commonObjects"))):
                             names[instance.getname().upper()] = True
         else:
@@ -2768,21 +2330,25 @@ class PLCControler:
             return new_id, connections
 
     def GetEditedElementInstancesInfos(self, tagname, debug=False):
-        element_instances = OrderedDict()
         element = self.GetEditedElement(tagname, debug)
         if element is not None:
-            factory = BlockInstanceFactory(element_instances)
-
-            pou_block_instances_xslt_tree = etree.XSLT(
-                pou_block_instances_xslt,
-                extensions={
-                    ("pou_block_instances_ns", name): getattr(factory, name)
-                    for name in ["AddBlockInstance", "SetSpecificValues",
-                                 "AddInstanceConnection", "AddConnectionLink",
-                                 "AddLinkPoint", "AddAction"]})
-
-            pou_block_instances_xslt_tree(element)
-        return element_instances
+            return self.BlockInstanceCollector.Collect(element, debug)
+        return {}
+        # element_instances = OrderedDict()
+        # element = self.GetEditedElement(tagname, debug)
+        # if element is not None:
+        #     factory = BlockInstanceFactory(element_instances)
+        #
+        #     pou_block_instances_xslt_tree = etree.XSLT(
+        #         pou_block_instances_xslt,
+        #         extensions={
+        #             ("beremiz", name): getattr(factory, name)
+        #             for name in ["AddBlockInstance", "SetSpecificValues",
+        #                          "AddInstanceConnection", "AddConnectionLink",
+        #                          "AddLinkPoint", "AddAction"]})
+        #
+        #     pou_block_instances_xslt_tree(element)
+        # return element_instances
 
     def ClearEditedElementExecutionOrder(self, tagname):
         element = self.GetEditedElement(tagname)
@@ -2876,11 +2442,11 @@ class PLCControler:
             element.addinstance(block)
 
     def SetFormalParameter(self, tagname, old_name, new_name, block_name):
-        #TODO производительность проверить
+        # TODO производительность проверить
         element = self.GetEditedElement(tagname)
-        #etree.tostring(element, pretty_print=True)
-        #test3 = element.findall(block_name)
-        #test1 = etree.tostring(element, pretty_print=True)
+        # etree.tostring(element, pretty_print=True)
+        # test3 = element.findall(block_name)
+        # test1 = etree.tostring(element, pretty_print=True)
         body = element.getbody()
         if isinstance(body, list):
             body = body[0]
@@ -3445,7 +3011,8 @@ class PLCControler:
         words = tagname.split("::")
 
         varlist = [var.Name for var in self.GetConfigurationGlobalVars(words[1], debug) if var.Type == "BOOL"]
-        varlist = [var.Name for var in self.GetConfigurationResourceGlobalVars(words[1], words[2], debug) if var.Type == "BOOL"]
+        varlist = [var.Name for var in self.GetConfigurationResourceGlobalVars(words[1], words[2], debug) if
+                   var.Type == "BOOL"]
         # for var in self.GetConfigurationGlobalVars(words[1], debug):
         #     if var.Type == "BOOL":
         #         varlist.append(var.Name)
@@ -3476,9 +3043,9 @@ class PLCControler:
     def SetEditedFastTaskDialog(self, tagname, fasttasks):
         resource = self.GetEditedElement(tagname)
         if resource is not None:
-            #resource.settask([])
+            # resource.settask([])
 
-            #resource.setpouInstance([])
+            # resource.setpouInstance([])
             resource.setfasttask([])
             resource.setevent([])
             task_list = {}
@@ -3496,7 +3063,7 @@ class PLCControler:
                     task_list[task["Name"]] = new_task
 
     def SetEditedResourceInfos(self, tagname, tasks, instances):
-        #self.SetEditedFastTask(tagname, tasks)
+        # self.SetEditedFastTask(tagname, tasks)
         resource = self.GetEditedElement(tagname)
         if resource is not None:
             resource.settask([])
@@ -3614,7 +3181,7 @@ class PLCControler:
                     else:
                         modes.append(" ")
                 new_task["Mode"] = "\n".join(modes)
-                    #new_task["Mode"] = "\n".join([event.getmode() for event in events])
+                # new_task["Mode"] = "\n".join([event.getmode() for event in events])
                 new_task["Event"] = "\n".join(values)
                 new_task["Priority"] = str(fasttask.getpriority())
                 fasttasks_data.append(new_task)
@@ -3645,7 +3212,7 @@ class PLCControler:
                     return task
 
     def GetEditedFastTaskList(self, resource, debug=False):
-        #resource = self.GetEditedElement(tagname, debug)
+        # resource = self.GetEditedElement(tagname, debug)
         if resource is not None:
             fasttasks = resource.getfasttask()
             return [fasttask.getname() for fasttask in fasttasks]

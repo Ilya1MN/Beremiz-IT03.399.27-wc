@@ -32,7 +32,7 @@ import wx.lib.buttons
 from plcopen.structures import LOCATIONDATATYPES, TestIdentifier, IEC_KEYWORDS, DefaultType
 from .CustomGrid import CustomGrid
 from util.BitmapLibrary import GetBitmap
-from PLCControler import _VariableInfos
+from plcopen.VariableInfoCollector import _VariableInfos
 from util.TranslationCatalogs import NoTranslate
 from .VariablePanel import VariablePanel, VariableDropTarget, VariableTable
 

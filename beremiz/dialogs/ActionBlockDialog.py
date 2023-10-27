@@ -28,7 +28,7 @@ import wx.lib.buttons
 
 from controls import CustomGrid, CustomTable
 from util.BitmapLibrary import GetBitmap
-from PLCControler import _ActionInfos
+from plcopen.BlockInstanceCollector import _ActionInfos
 from util.TranslationCatalogs import NoTranslate
 # -------------------------------------------------------------------------------
 #                                  Helpers

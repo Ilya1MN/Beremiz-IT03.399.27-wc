@@ -37,7 +37,7 @@ from .CustomGrid import CustomGrid
 from .CustomTable import CustomTable
 from .LocationCellEditor import LocationCellEditor
 from util.BitmapLibrary import GetBitmap
-from PLCControler import _VariableInfos
+from plcopen.VariableInfoCollector import _VariableInfos
 from util.TranslationCatalogs import NoTranslate
 from threading import Thread
 
@@ -990,7 +990,6 @@ class VariablePanel(wx.Panel):
                 self.RefreshValues()
                 self.SaveValues()
 
-    #Функция передающая базовые типы данных
     def BuildStdIECTypesMenu(self, type_menu):
             # build a submenu containing standard IEC types
             base_menu = wx.Menu(title='')
@@ -1050,7 +1049,7 @@ class VariablePanel(wx.Panel):
         if datatype_menu.GetMenuItemCount() <= 0:
             type_menu.Enable(id=new_id, enable=False)
 
-    #Передает LibIT_EEPROM типы данных
+
     def BuildLibsTypesMenu(self, type_menu):
         for category in self.Controler.GetConfNodeDataTypes():
             if len(category["list"]) > 0:
@@ -1063,7 +1062,6 @@ class VariablePanel(wx.Panel):
 
                 type_menu.Append(wx.NewId(), category["name"], confnode_datatype_menu)
 
-    #Передает типы данных функциональных блоков
     def BuildProjectTypesMenu(self, type_menu, classtype):
         # build a submenu containing function block types
         bodytype = self.Controler.GetEditedElementBodyType(self.TagName)
