@@ -1176,10 +1176,10 @@ class PLCControler:
         variables = []
 
         # self.VariableInfoCollector = VariableInfoCollector(self)
-        # start_times = datetime.datetime.now()
+        start_times = datetime.datetime.now()
         self.VariableInfoCollector.Collect(object_with_vars, debug, variables, tree)
-        # millisec = (datetime.datetime.now() - start_times).total_seconds()
-        # print(millisec)
+        millisec = (datetime.datetime.now() - start_times).total_seconds()
+        print(millisec)
         # print(datetime.datetime.now() - start_times)
         return variables
 

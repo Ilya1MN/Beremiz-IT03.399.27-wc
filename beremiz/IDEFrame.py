@@ -1661,12 +1661,14 @@ class IDEFrame(wx.Frame):
                 root, self.TreeImageDict[self.Controler.GetPouBodyType(infos["name"])])
             if item_alone:
                 self.ProjectTree.SetItemExtraImage(root, self.Controler.GetPouType(infos["name"]))
-#20.04.2022
+#20.04.2022  <- Дата предыдущего автора
+            # -> (Автор Волов Илья) Вернул как изначально планировался этот блок, дублированный блок который был выше убран (2023.10.27)
+            #region Кусок отвечает за выделение цветом не используемых блоков
             if self.Controler.PouIsUsed(item_name):
                self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.WHITE))
             else:
                self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.YELLOW))
-
+            #endregion
         elif "icon" in infos and infos["icon"] is not None:
             icon_name = infos["icon"]
             if icon_name not in self.TreeImageDict:
