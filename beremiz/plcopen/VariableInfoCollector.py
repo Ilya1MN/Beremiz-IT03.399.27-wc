@@ -37,7 +37,7 @@ class VariablesInfosFactory:
         self.Type = args[0][0]
 
     def GetType(self):
-        if len(self.Dimensions) > 0:
+        if self.Dimensions:
             return ("array", self.Type, self.Dimensions)
         return self.Type
 

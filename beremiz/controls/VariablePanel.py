@@ -1021,7 +1021,7 @@ class VariablePanel(wx.Panel):
         if Resource:
             lastGroup = _("Resources")
         else:
-            if Variables: #len(Variables) == 0:
+            if len(Variables) == 0:
                 return
             lastGroup = Variables[0].Group
 

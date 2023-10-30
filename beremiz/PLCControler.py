@@ -623,10 +623,8 @@ class PLCControler:
         project = self.GetProject(debug)
         if project is not None:
             # instance_list = self.GetInstanceList(project, name, debug)
-            pou = [pou.getname() for pou in project.getpous()]
-
-            for pou_name in pou:  # project.getpous():
-                # pou_name = pou.getname()
+            for pou in project.getpous():
+                pou_name = pou.getname()
                 if self.PouIsUsed(pou_name):
                     body = pou.getbody()
                     if isinstance(body, list):
@@ -646,21 +644,23 @@ class PLCControler:
     def PouFuncIsUsed(self, name, debug=False, pou_type=None):
         project = self.GetProject(debug)
         if project is not None:
-            pou = [pou for pou in project.getpous() if pou_type == "function"]
+            # pou = [pou for pou in project.getpous() if pou_type == "function"]
             # instance_list = self.GetInstanceList(project, name, debug)
-            for body in pou:
-                body = body.getbody()
-                if isinstance(body, list):
-                    body = body[0]
-                body_content = body.getcontent()
-                body_type = body_content.getLocalTag()
-                if body_type in ["FBD", "LD", "SFC"]:
-                    for instance in body.getcontentInstances():
-                        instance_type = instance.getLocalTag()
-                        if instance_type == "block":
-                            blocktype = instance.gettypeName()
-                            if blocktype == name:
-                                return True
+            for pou in project.getpous():
+                pou_name = pou.getname()
+                if pou_type == "function":
+                    body = pou.getbody()
+                    if isinstance(body, list):
+                        body = body[0]
+                    body_content = body.getcontent()
+                    body_type = body_content.getLocalTag()
+                    if body_type in ["FBD", "LD", "SFC"]:
+                        for instance in body.getcontentInstances():
+                            instance_type = instance.getLocalTag()
+                            if instance_type == "block":
+                                blocktype = instance.gettypeName()
+                                if blocktype == name:
+                                    return True
         return False
         # предыдущий фрагмент
         # for pou in project.getpous():
@@ -1176,10 +1176,10 @@ class PLCControler:
         variables = []
 
         # self.VariableInfoCollector = VariableInfoCollector(self)
-        start_times = datetime.datetime.now()
+        # start_times = datetime.datetime.now()
         self.VariableInfoCollector.Collect(object_with_vars, debug, variables, tree)
-        millisec = (datetime.datetime.now() - start_times).total_seconds()
-        print(millisec)
+        # millisec = (datetime.datetime.now() - start_times).total_seconds()
+        # print(millisec)
         # print(datetime.datetime.now() - start_times)
         return variables
 
@@ -2930,16 +2930,12 @@ class PLCControler:
     def GetEditedResourceVariables(self, tagname, debug=False):
         varlist = []
         words = tagname.split("::")
-
-        varlist = [var.Name for var in self.GetConfigurationGlobalVars(words[1], debug) if var.Type == "BOOL"]
-        varlist = [var.Name for var in self.GetConfigurationResourceGlobalVars(words[1], words[2], debug) if
-                   var.Type == "BOOL"]
-        # for var in self.GetConfigurationGlobalVars(words[1], debug):
-        #     if var.Type == "BOOL":
-        #         varlist.append(var.Name)
-        # for var in self.GetConfigurationResourceGlobalVars(words[1], words[2], debug):
-        #     if var.Type == "BOOL":
-        #         varlist.append(var.Name)
+        for var in self.GetConfigurationGlobalVars(words[1], debug):
+            if var.Type == "BOOL":
+                varlist.append(var.Name)
+        for var in self.GetConfigurationResourceGlobalVars(words[1], words[2], debug):
+            if var.Type == "BOOL":
+                varlist.append(var.Name)
         return varlist
 
     def SetEditedFastTask(self, tagname, fasttasks):
