@@ -881,15 +881,16 @@ class VariablePanel(wx.Panel):
         dialog.ShowModal()
         dialog.Destroy()
 
-    def SetFormalParamInPou(self, pou, value, old_value):
-        tagname = self.Controler.ComputePouName(pou.getname())
-        if self.ElementType != "function":
-            if self.Controler.PouIsUsedBy(self.TagName.split("::")[1], tagname.split("::")[1]):
-                self.Controler.SetFormalParameter(tagname, old_value, value,
-                                                  self.TagName.split("::")[1])
-        else:
-            self.Controler.SetFormalParameter(tagname, old_value, value,
-                                              self.TagName.split("::")[1])
+    # Обращение идет  def OnVariablesGridCellChange(self, event, row=None, col=None): строка 956 этого файла
+    # def SetFormalParamInPou(self, pou, value, old_value):
+    #     tagname = self.Controler.ComputePouName(pou.getname())
+    #     if self.ElementType != "function":
+    #         if self.Controler.PouIsUsedBy(self.TagName.split("::")[1], tagname.split("::")[1]):
+    #             self.Controler.SetFormalParameter(tagname, old_value, value,
+    #                                               self.TagName.split("::")[1])
+    #     else:
+    #         self.Controler.SetFormalParameter(tagname, old_value, value,
+    #                                           self.TagName.split("::")[1])
 
     def SetNameEditedVariablePou(self, value, old_value, tagname):
         var_name_pou = self.Controler.GetEditedElementVariables(tagname, self.Debug)
@@ -909,21 +910,21 @@ class VariablePanel(wx.Panel):
         value = self.Table.GetValue(row, col)
         message = None
         message_warn = None
-        if not self.ParentWindow.CheckPouInOut:
-            if colname == "Class" and self.ElementType == "functionBlock":
-                if self.Table.GetValueByName(row, "Class") in ["Input", "Output", "InOut"]:
-                    fb_list_name = self.Controler.GetPouNamesIsUsedFB(self.TagName.split("::")[1])
-                    if len(fb_list_name) > 0:
-                        message_warn = "WARNING: Check function block \'" + self.TagName.split("::")[1] + "\' in program/function blocks : \n" + ", ".join(
-                    fb_list_name)
-
-            if colname == "Class" and self.ElementType == "function":
-                if self.Table.GetValueByName(row, "Class") in ["Input", "Output", "InOut"]:
-                    func_name = self.TagName.split("::")[1]
-                    instance_func = self.Controler.GetFbNameIsFuncUsed(func_name, self.Debug)
-                    if len(instance_func) > 0:
-                        message_warn = "WARNING: Check function \'" + func_name + "\' in program/function blocks : \n" + ", ".join(
-                            instance_func)
+        # if not self.ParentWindow.CheckPouInOut:
+        #     if colname == "Class" and self.ElementType == "functionBlock":
+        #         if self.Table.GetValueByName(row, "Class") in ["Input", "Output", "InOut"]:
+        #             fb_list_name = self.Controler.GetPouNamesIsUsedFB(self.TagName.split("::")[1])
+        #             if len(fb_list_name) > 0:
+        #                 message_warn = "WARNING: Check function block \'" + self.TagName.split("::")[1] + "\' in program/function blocks : \n" + ", ".join(
+        #             fb_list_name)
+        #
+        #     if colname == "Class" and self.ElementType == "function":
+        #         if self.Table.GetValueByName(row, "Class") in ["Input", "Output", "InOut"]:
+        #             func_name = self.TagName.split("::")[1]
+        #             instance_func = self.Controler.GetFbNameIsFuncUsed(func_name, self.Debug)
+        #             if len(instance_func) > 0:
+        #                 message_warn = "WARNING: Check function \'" + func_name + "\' in program/function blocks : \n" + ", ".join(
+        #                     instance_func)
 
         if colname == "Name" and value != "":
             if not TestIdentifier(value):
@@ -951,8 +952,8 @@ class VariablePanel(wx.Panel):
                             self.Controler.UpdateEditedElementUsedVariable(tagname, old_value, value)
                     else:
                         project = self.Controler.GetProject(self.Debug)
-                        for pou in project.getpous():
-                            self.SetFormalParamInPou(pou, value, old_value)
+                        # for pou in project.getpous():
+                        #     self.SetFormalParamInPou(pou, value, old_value)
                             #th = Thread(target=self.SetFormalParamInPou, args=(pou, value, old_value, ))
                             #th.start()
                 self.Controler.BufferProject()

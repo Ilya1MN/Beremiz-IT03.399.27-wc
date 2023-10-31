@@ -980,7 +980,7 @@ class IDEFrame(wx.Frame):
             PROJECTTREE: self.RefreshProjectTree,
             POUINSTANCEVARIABLESPANEL: self.RefreshPouInstanceVariablesPanel,
             LIBRARYTREE: self.RefreshLibraryPanel,
-            VARIABLETREE: self.RefreshVariableTree,
+            # VARIABLETREE: self.RefreshVariableTree,
             SCALING: self.RefreshScaling,
             PAGETITLES: self.RefreshPageTitles}
 
@@ -1589,13 +1589,6 @@ class IDEFrame(wx.Frame):
     #                         Types Tree Management Functions
     # -------------------------------------------------------------------------------
 
-    # def RefreshProjectTreeHighlight(self):
-    #     if self.ProjectTree is not None:
-    #         root = self.ProjectTree.GetRootItem()
-    #         item_data = self.ProjectTree.GetItemData(root)
-    #         # self.GenerateProjectTreeBranchHighlight(root, item_data)
-    #         self.ProjectTree.Refresh()
-
     def RefreshProjectTree(self):
         # Extract current selected item tagname
         selected = self.ProjectTree.GetSelection()
@@ -1617,32 +1610,6 @@ class IDEFrame(wx.Frame):
         if tagname is not None:
             self.SelectProjectTreeItem(tagname)
         # self.RefreshProjectTreeHighlight()
-
-    # def GenerateProjectTreeBranchHighlight(self, root, infos, item_alone=False):
-    #     to_delete = []
-    #     item_name = infos["name"]
-    #     if infos["type"] in ITEMS_UNEDITABLE:
-    #         if len(infos["values"]) == 1:
-    #             return self.GenerateProjectTreeBranchHighlight(root, infos["values"][0], True)
-    #         item_name = _(item_name)
-    #     if infos["type"] == ITEM_POU:
-    #         if self.Controler.PouFbIsUsed(item_name):
-    #             self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.WHITE))
-    #         else:
-    #             self.ProjectTree.SetItemBackgroundColour(root, wx.Colour(wx.YELLOW))
-    #
-    #     item, root_cookie = self.ProjectTree.GetFirstChild(root)
-    #     for values in infos["values"]:
-    #         if values["type"] not in ITEMS_UNEDITABLE or len(values["values"]) > 0:
-    #             if item is None or not item.IsOk():
-    #                 item = self.ProjectTree.AppendItem(root, "")
-    #                 item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
-    #             self.GenerateProjectTreeBranchHighlight(item, values)
-    #             item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
-    #     while item is not None and item.IsOk():
-    #         to_delete.append(item)
-    #         item, root_cookie = self.ProjectTree.GetNextChild(root, root_cookie)
-
 
     def GenerateProjectTreeBranch(self, root, infos, item_alone=False):
         to_delete = []
@@ -2212,25 +2179,25 @@ class IDEFrame(wx.Frame):
                 item = self.insert_item_sort(tree, root_item, name, num + 1)
             return item
 
-    def RefreshVariableTree(self):
+    # def RefreshVariableTree(self):
         # Refresh treectrl items according to project infos
-        infos = self.Controler.GetProjectInfosFull()
-        root = self.VariableTree.GetRootItem()
-        if root is None or not root.IsOk():
-            root = self.VariableTree.AddRoot(_("Variables"))
-        item_names = list()
-        for name in infos:
-            item = self.get_item_by_label(self.VariableTree, _(name["name"]), root)
-            if item is None:
-                previousItem = self.insert_item_sort(self.VariableTree, root, _(name["name"]))
-                if previousItem is not None:
-                    item = self.VariableTree.InsertItem(root, previousItem, _(name["name"]))
-                else:
-                    item = self.VariableTree.AppendItem(root, name["name"])
-            self.GenerateVariableTreeBranch(item, name)
-            item_names.append(_(name["name"]))
-        self.clean_tree(self.VariableTree, root, item_names)
-        self.VariableTree.Refresh()
+        # infos = self.Controler.GetProjectInfosFull()
+        # root = self.VariableTree.GetRootItem()
+        # if root is None or not root.IsOk():
+        #     root = self.VariableTree.AddRoot(_("Variables"))
+        # item_names = list()
+        # for name in infos:
+        #     item = self.get_item_by_label(self.VariableTree, _(name["name"]), root)
+        #     if item is None:
+        #         previousItem = self.insert_item_sort(self.VariableTree, root, _(name["name"]))
+        #         if previousItem is not None:
+        #             item = self.VariableTree.InsertItem(root, previousItem, _(name["name"]))
+        #         else:
+        #             item = self.VariableTree.AppendItem(root, name["name"])
+        #     self.GenerateVariableTreeBranch(item, name)
+        #     item_names.append(_(name["name"]))
+        # self.clean_tree(self.VariableTree, root, item_names)
+        # self.VariableTree.Refresh()
         #
         #
         #self.RefreshProjectTreeHighlight()
@@ -2860,9 +2827,9 @@ class IDEFrame(wx.Frame):
         if infos[1] == "name":
             self.Highlights[infos[0]] = highlight_type
             self.RefreshProjectTree()
-            self.RefreshVariableTree()
+            # self.RefreshVariableTree()
             self.VariableTree.Unselect()
-            self.ProjectTree.Unselect()
+            # self.ProjectTree.Unselect()
         else:
             self.EditProjectElement(self.Controler.GetElementType(infos[0]), infos[0])
             selected = self.TabsOpened.GetSelection()
@@ -2883,7 +2850,7 @@ class IDEFrame(wx.Frame):
             self.Highlights = dict(
                 [(name, highlight) for name, highlight in self.Highlights.items() if highlight != highlight_type])
         self.RefreshProjectTree()
-        self.RefreshVariableTree()
+        # self.RefreshVariableTree()
         for i in range(self.TabsOpened.GetPageCount()):
             viewer = self.TabsOpened.GetPage(i)
             viewer.ClearHighlights(highlight_type)

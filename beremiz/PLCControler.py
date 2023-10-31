@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from typing import List
 # This file is part of Beremiz, a Integrated Development Environment for
 # programming IEC 61131-3 automates supporting plcopen standard and CanFestival.
 #
@@ -60,18 +60,12 @@ import sys
 import re
 import datetime
 
-duration_model = re.compile(
-    "(?:([0-9]{1,2})h)?(?:([0-9]{1,2})m(?!s))?(?:([0-9]{1,2})s)?(?:([0-9]{1,3}(?:\.[0-9]*)?)ms)?")
+duration_model = re.compile("(?:([0-9]{1,2})h)?(?:([0-9]{1,2})m(?!s))?(?:([0-9]{1,2})s)?(?:([0-9]{1,3}(?:\.[0-9]*)?)ms)?")
 
-NOTEBOOK_PAGES_IN = ["program", "functionBlock"]
-
+# NOTEBOOK_PAGES_IN: list[str] = ["program", "functionBlock"]
 ScriptDirectory = paths.AbsDir(__file__)
 # Length of the buffer
 UNDO_BUFFER_LENGTH = 20
-
-
-
-
 
 class UndoBuffer:
     """
@@ -410,102 +404,102 @@ class PLCControler:
         return None
 
     # Return project informations
-    def GetProjectInfosFull(self, debug=False):
-        project = self.GetProject(debug)
-        if project is not None:
-            InfoGlobVar = {}
-            GlobalVariables = natsorted(self.GetConfigurationGlobalVars('config'), key=lambda x: x.Name.lower())
-            if GlobalVariables:  # len(GlobalVariables) > 0:
-                InfoGlobVar = {"name": _("Global Variables"), "type": ITEM_CONFIGURATIONS, "values": [],
-                               "index_var": int}
-                for GlobalVar in GlobalVariables:
-                    InfoGlobVar["values"].append(
-                        {"name": GlobalVar.Name + ", " + GlobalVar.Type, "type": ITEM_VARIABLE, "values": [],
-                         "index_var": GlobalVar.Number})
-
-            pou_types = {
-                "function": {
-                    "name": FUNCTIONS,
-                    "type": ITEM_FUNCTION,
-                    "values": [],
-                    "notPage": 0
-                },
-                "functionBlock": {
-                    "name": FUNCTION_BLOCKS,
-                    "type": ITEM_FUNCTIONBLOCK,
-                    "values": [],
-                    "index_var": int,
-                    "notPage": int
-                },
-                "program": {
-                    "name": PROGRAMS,
-                    "type": ITEM_PROGRAM,
-                    "values": [],
-                    "index_var": int,
-                    "notPage": int
-                }
-            }
-
-            for pou in project.getpous():
-                pou_type = pou.getpouType()
-                pou_infos = {"name": pou.getname(), "type": ITEM_POU,
-                             "tagname": self.ComputePouName(pou.getname()),
-                             "values": [],
-                             "index_var": int,
-                             "notPage": int}
-                pou_values = []
-                pou_variables = natsorted(self.GetEditedElementInterfaceVars("P::" + pou.getname()),
-                                          key=lambda x: x.Name.lower())
-                if pou_variables is not None:
-                    for pou_var in pou_variables:
-                        try:
-                            pou_values.append({"name": pou_var.Name + ", " + pou_var.Type,
-                                               "type": ITEM_VAR_LOCAL,
-                                               "values": [],
-                                               "index_var": pou_var.Number})
-                        except:
-                            pass
-                if pou_type in pou_types:
-                    pou_infos["values"] = pou_values
-                    pou_types[pou_type]["values"].append(pou_infos)
-            configurations = {"name": CONFIGURATIONS, "type": ITEM_CONFIGURATIONS, "values": [], "index_var": int}
-            resources = {"name": RESOURCES, "type": ITEM_RESOURCES, "values": [], "index_var": int}
-            for config in project.getconfigurations():
-                for resource in config.getresource():
-                    resource_name = resource.getname()
-                    resource_infos = {
-                        "name": resource_name,
-                        "type": ITEM_RESOURCE,
-                        "tagname": self.ComputeConfigurationResourceName(config.getname(), resource_name),
-                        "values": [],
-                        "index_var": int}
-                    resources_variables = self.GetConfigurationResourceGlobalVars(config.getname(), resource_name)
-                    if resources_variables:  # len(resources_variables) > 0:
-                        try:
-                            resources_variables = natsorted(resources_variables, key=lambda x: x.Name.lower())
-                        except:
-                            pass
-                        for ResurceVar in resources_variables:
-                            resource_infos["values"].append(
-                                {"name": ResurceVar.Name + ", " + ResurceVar.Type, "type": ITEM_VAR_GLOBAL,
-                                 "values": [], "index_var": ResurceVar.Number})
-                        if resource_infos["values"]:  # len(resource_infos["values"]) > 0:
-                            resources["values"].append(resource_infos)
-                        for res in resources["values"]:
-                            if res["values"]:  # len(res["values"]) > 0:
-                                configurations["values"].append(resources)
-            infos = list()
-            if InfoGlobVar:  # len(InfoGlobVar) > 0:
-                if InfoGlobVar["values"]:  # len(InfoGlobVar["values"]) > 0:
-                    infos.append(InfoGlobVar)
-            for pou in pou_types:
-                if pou_types[pou]["values"]:  # len(pou_types[pou]["values"]):
-                    infos.append(pou_types[pou])
-            for configuration in configurations["values"]:
-                if configuration["values"]:  # len(configuration["values"]) > 0:
-                    infos.append(configuration)
-            return infos
-        return None
+    # def GetProjectInfosFull(self, debug=False):
+    #     project = self.GetProject(debug)
+    #     if project is not None:
+    #         InfoGlobVar = {}
+    #         GlobalVariables = natsorted(self.GetConfigurationGlobalVars('config'), key=lambda x: x.Name.lower())
+    #         if GlobalVariables:  # len(GlobalVariables) > 0:
+    #             InfoGlobVar = {"name": _("Global Variables"), "type": ITEM_CONFIGURATIONS, "values": [],
+    #                            "index_var": int}
+    #             for GlobalVar in GlobalVariables:
+    #                 InfoGlobVar["values"].append(
+    #                     {"name": GlobalVar.Name + ", " + GlobalVar.Type, "type": ITEM_VARIABLE, "values": [],
+    #                      "index_var": GlobalVar.Number})
+    #
+    #         pou_types = {
+    #             "function": {
+    #                 "name": FUNCTIONS,
+    #                 "type": ITEM_FUNCTION,
+    #                 "values": [],
+    #                 "notPage": 0
+    #             },
+    #             "functionBlock": {
+    #                 "name": FUNCTION_BLOCKS,
+    #                 "type": ITEM_FUNCTIONBLOCK,
+    #                 "values": [],
+    #                 "index_var": int,
+    #                 "notPage": int
+    #             },
+    #             "program": {
+    #                 "name": PROGRAMS,
+    #                 "type": ITEM_PROGRAM,
+    #                 "values": [],
+    #                 "index_var": int,
+    #                 "notPage": int
+    #             }
+    #         }
+    #
+    #         for pou in project.getpous():
+    #             pou_type = pou.getpouType()
+    #             pou_infos = {"name": pou.getname(), "type": ITEM_POU,
+    #                          "tagname": self.ComputePouName(pou.getname()),
+    #                          "values": [],
+    #                          "index_var": int,
+    #                          "notPage": int}
+    #             pou_values = []
+    #             pou_variables = natsorted(self.GetEditedElementInterfaceVars("P::" + pou.getname()),
+    #                                       key=lambda x: x.Name.lower())
+    #             if pou_variables is not None:
+    #                 for pou_var in pou_variables:
+    #                     try:
+    #                         pou_values.append({"name": pou_var.Name + ", " + pou_var.Type,
+    #                                            "type": ITEM_VAR_LOCAL,
+    #                                            "values": [],
+    #                                            "index_var": pou_var.Number})
+    #                     except:
+    #                         pass
+    #             if pou_type in pou_types:
+    #                 pou_infos["values"] = pou_values
+    #                 pou_types[pou_type]["values"].append(pou_infos)
+    #         configurations = {"name": CONFIGURATIONS, "type": ITEM_CONFIGURATIONS, "values": [], "index_var": int}
+    #         resources = {"name": RESOURCES, "type": ITEM_RESOURCES, "values": [], "index_var": int}
+    #         for config in project.getconfigurations():
+    #             for resource in config.getresource():
+    #                 resource_name = resource.getname()
+    #                 resource_infos = {
+    #                     "name": resource_name,
+    #                     "type": ITEM_RESOURCE,
+    #                     "tagname": self.ComputeConfigurationResourceName(config.getname(), resource_name),
+    #                     "values": [],
+    #                     "index_var": int}
+    #                 resources_variables = self.GetConfigurationResourceGlobalVars(config.getname(), resource_name)
+    #                 if resources_variables:  # len(resources_variables) > 0:
+    #                     try:
+    #                         resources_variables = natsorted(resources_variables, key=lambda x: x.Name.lower())
+    #                     except:
+    #                         pass
+    #                     for ResurceVar in resources_variables:
+    #                         resource_infos["values"].append(
+    #                             {"name": ResurceVar.Name + ", " + ResurceVar.Type, "type": ITEM_VAR_GLOBAL,
+    #                              "values": [], "index_var": ResurceVar.Number})
+    #                     if resource_infos["values"]:  # len(resource_infos["values"]) > 0:
+    #                         resources["values"].append(resource_infos)
+    #                     for res in resources["values"]:
+    #                         if res["values"]:  # len(res["values"]) > 0:
+    #                             configurations["values"].append(resources)
+    #         infos = list()
+    #         if InfoGlobVar:  # len(InfoGlobVar) > 0:
+    #             if InfoGlobVar["values"]:  # len(InfoGlobVar["values"]) > 0:
+    #                 infos.append(InfoGlobVar)
+    #         for pou in pou_types:
+    #             if pou_types[pou]["values"]:  # len(pou_types[pou]["values"]):
+    #                 infos.append(pou_types[pou])
+    #         for configuration in configurations["values"]:
+    #             if configuration["values"]:  # len(configuration["values"]) > 0:
+    #                 infos.append(configuration)
+    #         return infos
+    #     return None
 
     def GetPouVariables(self, tagname, debug=False):
         project = self.GetProject(debug)
@@ -523,20 +517,20 @@ class PLCControler:
         return None
 
     def GetInstanceList(self, root, name, debug=False):
+        return  self.InstancesPathCollector.Collect(root, name, debug)
+        # # return self.InstancesPathCollector.Collect(root, name, debug)
+        # instances = []
+        # project = self.GetProject(debug)
+        # if project is not None:
+        #    return self.InstancesPathCollector.Collect(root, name, debug)
+        # return instances
 
-        # return self.InstancesPathCollector.Collect(root, name, debug)
-        instances = []
-        project = self.GetProject(debug)
-        if project is not None:
-           return self.InstancesPathCollector.Collect(root, name, debug)
-        return instances
-
-    def FastTaskIsUse(self, project, name, debug=False):
-        for root in project.getconfigurations():
-            for resource in root.getresource():
-                if name in self.GetEditedFastTaskList(resource, debug):
-                    return True
-        return False
+    # def FastTaskIsUse(self, project, name, debug=False):
+    #     for root in project.getconfigurations():
+    #         for resource in root.getresource():
+    #             if name in self.GetEditedFastTaskList(resource, debug):
+    #                 return True
+    #     return False
 
     def SearchPouInstances(self, tagname, debug=False):
         project = self.GetProject(debug)
@@ -589,96 +583,101 @@ class PLCControler:
     def PouIsUsed(self, name, debug=False):
         project = self.GetProject(debug)
         if project is not None:
-            pou_type = project.getpou(name).getpouType()
-            if pou_type == "function":
-                return self.PouFuncIsUsed(name, debug, pou_type)
-            else:
-                return self.GetInstanceList(project, name, debug)  # len(self.GetInstanceList(project, name, debug)) > 0
+            return len(self.GetInstanceList(project, name, debug)) > 0
         return False
-
-    def PouFbIsUsed(self, name, debug=False):
-        project = self.GetProject(debug)
-        if project is not None:
-            pou_type = project.getpou(name).getpouType()
-            if pou_type == "function":
-                return True
-            return len(self.GetInstanceList(project, name, debug)) > 0 or self.FastTaskIsUse(project, name, debug)
-        return False
-
-    def GetPouNamesIsUsedFB(self, name, debug=False):
-        pou_names_list = []
-        project = self.GetProject(debug)
-        for pou in project.getpous():
-            pou_name = pou.getname()
-            tagname = self.ComputePouName(pou_name).split("::")[1]
-            if self.PouIsUsed(pou_name):
-                var_name_pou = self.GetProjectPouVariableTypes(tagname, debug)
-                if name in var_name_pou and tagname not in pou_names_list:
-                    pou_names_list.append(tagname)
-        return pou_names_list
-
-    def GetFbNameIsFuncUsed(self, name, debug=False):
-        # TODO производительность проверить
-        fb_types_list = []
-        project = self.GetProject(debug)
-        if project is not None:
-            # instance_list = self.GetInstanceList(project, name, debug)
-            for pou in project.getpous():
-                pou_name = pou.getname()
-                if self.PouIsUsed(pou_name):
-                    body = pou.getbody()
-                    if isinstance(body, list):
-                        body = body[0]
-                    body_content = body.getcontent()
-                    body_type = body_content.getLocalTag()
-                    if body_type in ["FBD", "LD", "SFC"]:
-                        for instance in body.getcontentInstances():
-                            instance_type = instance.getLocalTag()
-                            if instance_type == "block":
-                                blocktype = instance.gettypeName()
-                                if blocktype == name and pou_name not in fb_types_list:
-                                    fb_types_list.append(pou_name)
-                                    break
-        return fb_types_list
-
-    def PouFuncIsUsed(self, name, debug=False, pou_type=None):
-        project = self.GetProject(debug)
-        if project is not None:
-            # pou = [pou for pou in project.getpous() if pou_type == "function"]
-            # instance_list = self.GetInstanceList(project, name, debug)
-            for pou in project.getpous():
-                pou_name = pou.getname()
-                if pou_type == "function":
-                    body = pou.getbody()
-                    if isinstance(body, list):
-                        body = body[0]
-                    body_content = body.getcontent()
-                    body_type = body_content.getLocalTag()
-                    if body_type in ["FBD", "LD", "SFC"]:
-                        for instance in body.getcontentInstances():
-                            instance_type = instance.getLocalTag()
-                            if instance_type == "block":
-                                blocktype = instance.gettypeName()
-                                if blocktype == name:
-                                    return True
-        return False
-        # предыдущий фрагмент
-        # for pou in project.getpous():
-        #     pou_name = pou.getname()
-        #     if pou_type == "function": #self.PouIsUsed(pou_name):
-        #         body = pou.getbody()
-        #         if isinstance(body, list):
-        #             body = body[0]
-        #         body_content = body.getcontent()
-        #         body_type = body_content.getLocalTag()
-        #         if body_type in ["FBD", "LD", "SFC"]:
-        #             for instance in body.getcontentInstances():
-        #                 instance_type = instance.getLocalTag()
-        #                 if instance_type == "block":
-        #                     blocktype = instance.gettypeName()
-        #                     if blocktype == name:
-        #                         return True
-
+        # project = self.GetProject(debug)
+        # if project is not None:
+        #     pou_type = project.getpou(name).getpouType()
+        #     if pou_type == "function":
+        #         return self.PouFuncIsUsed(name, debug, pou_type)
+        #     else:
+        #         return self.GetInstanceList(project, name, debug)  # len(self.GetInstanceList(project, name, debug)) > 0
+        # return False
+    #region Убранные методы (пока не знаю влияют как то на работу или нет, но без них тоже работает, в оригинальном Беремиз их нет.)
+    # def PouFbIsUsed(self, name, debug=False):
+    #     project = self.GetProject(debug)
+    #     if project is not None:
+    #         pou_type = project.getpou(name).getpouType()
+    #         if pou_type == "function":
+    #             return True
+    #         return len(self.GetInstanceList(project, name, debug)) > 0 or self.FastTaskIsUse(project, name, debug)
+    #     return False
+    # Связан с функцией  def OnVariablesGridCellChange(self, event, row=None, col=None): строка 905 файл VariablePanel.py
+    # def GetPouNamesIsUsedFB(self, name, debug=False):
+    #     pou_names_list = []
+    #     project = self.GetProject(debug)
+    #     for pou in project.getpous():
+    #         pou_name = pou.getname()
+    #         tagname = self.ComputePouName(pou_name).split("::")[1]
+    #         if self.PouIsUsed(pou_name):
+    #             var_name_pou = self.GetProjectPouVariableTypes(tagname, debug)
+    #             if name in var_name_pou and tagname not in pou_names_list:
+    #                 pou_names_list.append(tagname)
+    #     return pou_names_list
+    #
+    # # Связан с функцией  def OnVariablesGridCellChange(self, event, row=None, col=None): строка 905 файл VariablePanel.py
+    # def GetFbNameIsFuncUsed(self, name, debug=False):
+    #     # TODO производительность проверить
+    #     fb_types_list = []
+    #     project = self.GetProject(debug)
+    #     if project is not None:
+    #         # instance_list = self.GetInstanceList(project, name, debug)
+    #         for pou in project.getpous():
+    #             pou_name = pou.getname()
+    #             if self.PouIsUsed(pou_name):
+    #                 body = pou.getbody()
+    #                 if isinstance(body, list):
+    #                     body = body[0]
+    #                 body_content = body.getcontent()
+    #                 body_type = body_content.getLocalTag()
+    #                 if body_type in ["FBD", "LD", "SFC"]:
+    #                     for instance in body.getcontentInstances():
+    #                         instance_type = instance.getLocalTag()
+    #                         if instance_type == "block":
+    #                             blocktype = instance.gettypeName()
+    #                             if blocktype == name and pou_name not in fb_types_list:
+    #                                 fb_types_list.append(pou_name)
+    #                                 break
+    #     return fb_types_list
+    # # Связан с функцией PouIsUsed(self, name, debug=False): строка 905 файл PLCController.py
+    # def PouFuncIsUsed(self, name, debug=False, pou_type=None):
+    #     project = self.GetProject(debug)
+    #     if project is not None:
+    #         # pou = [pou for pou in project.getpous() if pou_type == "function"]
+    #         # instance_list = self.GetInstanceList(project, name, debug)
+    #         for pou in project.getpous():
+    #             pou_name = pou.getname()
+    #             if pou_type == "function":
+    #                 body = pou.getbody()
+    #                 if isinstance(body, list):
+    #                     body = body[0]
+    #                 body_content = body.getcontent()
+    #                 body_type = body_content.getLocalTag()
+    #                 if body_type in ["FBD", "LD", "SFC"]:
+    #                     for instance in body.getcontentInstances():
+    #                         instance_type = instance.getLocalTag()
+    #                         if instance_type == "block":
+    #                             blocktype = instance.gettypeName()
+    #                             if blocktype == name:
+    #                                 return True
+    #     return False
+    #     # предыдущий фрагмент
+    #     # for pou in project.getpous():
+    #     #     pou_name = pou.getname()
+    #     #     if pou_type == "function": #self.PouIsUsed(pou_name):
+    #     #         body = pou.getbody()
+    #     #         if isinstance(body, list):
+    #     #             body = body[0]
+    #     #         body_content = body.getcontent()
+    #     #         body_type = body_content.getLocalTag()
+    #     #         if body_type in ["FBD", "LD", "SFC"]:
+    #     #             for instance in body.getcontentInstances():
+    #     #                 instance_type = instance.getLocalTag()
+    #     #                 if instance_type == "block":
+    #     #                     blocktype = instance.gettypeName()
+    #     #                     if blocktype == name:
+    #     #                         return True
+    #endregion
     # Return if pou given by name is directly or undirectly used by the reference pou
     def PouIsUsedBy(self, name, reference, debug=False):
         pou_infos = self.GetPou(reference, debug)
@@ -2361,30 +2360,30 @@ class PLCControler:
                 block.setinstanceName(blockname)
                 self.AddEditedElementPouVar(tagname, blocktype, blockname)
             element.addinstance(block)
-
-    def SetFormalParameter(self, tagname, old_name, new_name, block_name):
-        # TODO производительность проверить
-        element = self.GetEditedElement(tagname)
-        # etree.tostring(element, pretty_print=True)
-        # test3 = element.findall(block_name)
-        # test1 = etree.tostring(element, pretty_print=True)
-        body = element.getbody()
-        if isinstance(body, list):
-            body = body[0]
-        body_content = body.getcontent()
-        body_type = body_content.getLocalTag()
-        if body_type in ["FBD", "LD", "SFC"]:
-            for instance in body.getcontentInstances():
-                instance_type = instance.getLocalTag()
-                if instance_type == "block":
-                    blocktype = instance.gettypeName()
-                    if blocktype == block_name:
-                        for inputVariable in instance.inputVariables.getvariable():
-                            if inputVariable.getformalParameter() == old_name:
-                                inputVariable.setformalParameter(new_name)
-                        for outputVariable in instance.outputVariables.getvariable():
-                            if outputVariable.getformalParameter() == old_name:
-                                outputVariable.setformalParameter(new_name)
+    # К этой функции идет обращение из def SetFormalParamInPou(self, pou, value, old_value): файл VariablePanel.py строка 884
+    # def SetFormalParameter(self, tagname, old_name, new_name, block_name):
+    #     # TODO производительность проверить
+    #     element = self.GetEditedElement(tagname)
+    #     # etree.tostring(element, pretty_print=True)
+    #     # test3 = element.findall(block_name)
+    #     # test1 = etree.tostring(element, pretty_print=True)
+    #     body = element.getbody()
+    #     if isinstance(body, list):
+    #         body = body[0]
+    #     body_content = body.getcontent()
+    #     body_type = body_content.getLocalTag()
+    #     if body_type in ["FBD", "LD", "SFC"]:
+    #         for instance in body.getcontentInstances():
+    #             instance_type = instance.getLocalTag()
+    #             if instance_type == "block":
+    #                 blocktype = instance.gettypeName()
+    #                 if blocktype == block_name:
+    #                     for inputVariable in instance.inputVariables.getvariable():
+    #                         if inputVariable.getformalParameter() == old_name:
+    #                             inputVariable.setformalParameter(new_name)
+    #                     for outputVariable in instance.outputVariables.getvariable():
+    #                         if outputVariable.getformalParameter() == old_name:
+    #                             outputVariable.setformalParameter(new_name)
 
     def SetEditedElementBlockInfos(self, tagname, id, infos):
         element = self.GetEditedElement(tagname)
